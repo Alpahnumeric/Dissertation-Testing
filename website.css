@@ -1,5 +1,6 @@
 button {
   font-family: Arial;
+  cursor: pointer;
 }
 
 input {
