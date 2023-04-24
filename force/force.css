@@ -1,13 +1,11 @@
 div.tooltip{
   position: absolute;
   text-align: center;
-  min-width: 100;
   width: auto;
-  min-height: 25;
   height: auto;
   padding: 5px;
   font-family: Arial;
-  font-size: 15;
+  font-size: 15px;
   background: rgba(0, 0, 0, 0.8);
   color: #fff;
   border: 0px;

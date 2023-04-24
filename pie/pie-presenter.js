@@ -134,8 +134,6 @@ function generatePie(typeOfUpdate){
     .attr('fill', function(d) {return colorScale(d.data.id);})
     .attr("stroke", "black")
     .style("stroke-width", "1px")
-    //.style("opacity", 0.7)  
-    //Possibly use? Do research into best colors for education
     .each(function(d) {this._current = d;})
     .classed("selected", function(d) {return d === selectedSector;});
 
