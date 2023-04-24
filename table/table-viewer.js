@@ -88,6 +88,7 @@ function cell_viewer(elementID, backgroundColour){
     cell.style.background = backgroundColour;
     cell.setAttribute("colour", backgroundColour); 
     cell.setAttribute("text-align", "center");
+    cell.tabIndex = 0;
     return cell;
 }
 
