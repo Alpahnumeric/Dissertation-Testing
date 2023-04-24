@@ -28,25 +28,25 @@
 
 <body>
     <ul>
-        <li><a class = "menuOption" onclick='home_viewer();'>Home</a></li>
-        <li><a class = "menuOption" onclick='displayInstructions_viewer();'>Instructions</a></li>
-        <li class = "dropdown">
+        <li tabindex="0"><a class = "menuOption" onclick='home_viewer();'>Home</a></li>
+        <li tabindex="0"><a class = "menuOption" onclick='displayInstructions_viewer();'>Instructions</a></li>
+        <li tabindex="0" class = "dropdown">
             <a class = "aInTopPannel dropbtn" href = "javascript:void(0)">Examples</a>
             <div id = "exampleGraphOptions" class = "dropdown-content">
-                <button id = "teaHouse">&#x2615; Tea House</button>
-                <button id = "breastCancer">&#x1F397;Breast Cancer</button>
-                <button id = "montyHall">&#x1F410; Monty Hall Problem</button>
-                <button id = "universityApplication">&#x1F393; University Application</button>
-                <button id = "cancerCauses">&#x2695; Cancer Causes</button>
+                <button id = "teaHouse" role="button">&#x2615; Tea House</button>
+                <button id = "breastCancer" role="button">&#x1F397;Breast Cancer</button>
+                <button id = "montyHall" role="button">&#x1F410; Monty Hall Problem</button>
+                <button id = "universityApplication" role="button">&#x1F393; University Application</button>
+                <button id = "cancerCauses" role="button">&#x2695; Cancer Causes</button>
             </div>
         </li>
-        <li class = "dropdown">
+        <li tabindex="0" class = "dropdown">
             <a class = "aInTopPannel dropbtn" href = "javascript:void(0)">Import/Export</a>
             <div id = "exportOptions" class = "dropdown-content">
-                <button id = "fromJSON">&#11014; Import from JSON</button>
+                <button id = "fromJSON" role="button">&#11014; Import from JSON</button>
                 <hr>
-                <button id = "toJSON"> &#11015; Download as JSON</button>
-                <button id = "toPNG"> &#11015; Download as PNG</button>
+                <button id = "toJSON" role="button"> &#11015; Download as JSON</button>
+                <button id = "toPNG" role="button"> &#11015; Download as PNG</button>
                 <input type = "file" id = "uploadFile" class = "uploadFile" >
             </div>
         </li>
@@ -54,7 +54,7 @@
     <div class = "pieAndNetworkDiv">
         <div class = "leftContainer" id = "networkContainer">
             <p id = "networkErrorAlert" class = "pFormatting error" ></p>
-            <svg id = "networkSVG">
+            <svg id = "networkSVG" >
                 <div id = "pieLabels"></div>
             </svg> 
             <rect id = "networkSVGReaction"/>
@@ -69,14 +69,14 @@
         <div class = "rightContainer">
             <div class = "pieContainer" id = "pieContainer">
                 <header>
-                    <h1 id = "pieChartName">Welcome!</h1>
-                    <input class = "pieChartNameInput" id = "pieChartNameInput" type = "text">
-                    <span class = "pieChartDependencyIndicator" id = "pieChartDependencyIndicator"></span>
-                    <button id = "renameButton" class = "renameButton">Rename Variable</button> 
+                    <h1 tabindex="0" id = "pieChartName">Welcome!</h1>
+                    <input tabindex="0" class = "pieChartNameInput" id = "pieChartNameInput" type = "text">
+                    <span tabindex="0" class = "pieChartDependencyIndicator" id = "pieChartDependencyIndicator"></span>
+                    <button tabindex="0"  id = "renameButton" class = "renameButton" role="button">Rename Variable</button> 
                 </header>
                 <div> 
                     <div id = "sectorSelectionContainer" class = "inline">
-                        <label id = "pieInstruction1"> Click on a pie chart to view it.</label>
+                        <tabindex="0" label id = "pieInstruction1"> Click on a pie chart to view it.</label>
                     </div>
                     <p id = "pieInstruction2" class = "pFormatting"></p> 
                     <label for = "sectorName">Value:&nbsp;</label>
@@ -93,15 +93,15 @@
                     <label for = "sectorDenominator" id = "numeratorDenominatorDivide" class = "fractionInput">/</label>
                     <input type = "number" id = "sectorDenominator" min = "2" max = "100"  step = "1" class = "fractionInput">  
                     <!--- placeholder = "1" -->
-                    <button id = "pieSectorAddOrModify">Add</button>
+                    <button id = "pieSectorAddOrModify" role="button">Add</button>
                     <p id = "pieErrorAlert" class = "pFormatting error"></p>
                     <br>
                 </div>
                 <div id = "pieChartDiv" class = "pieChartDiv"></div>
                 <label id = "pieSumToOneText" for = "pieSumToOneIndicator"></label>
-                <label class = "symbol" id = "pieSumToOneIndicator"></label>
+                <label tabindex="0" class = "symbol" id = "pieSumToOneIndicator"></label>
                 <label id = "pieSum"></label>
-                <button id = "updateTableButton" class = "updateTableButton" >Update Table</button> 
+                <button id = "updateTableButton" class = "updateTableButton" role="button">Update Table</button> 
                 <p id = "updateTableArrow" class = "arrow pFormatting">&nbsp;</p>
             </div>
             <div id = "instructionsContainer" class = "instructionsContainer">
