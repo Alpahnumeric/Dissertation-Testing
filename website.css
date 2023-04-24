@@ -19,8 +19,15 @@ label {
 
 .probTableLabel {
   margin-top: 0.75em;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
   display: inline;
+  text-align: center;
   text-align: center;  
+  font-family: Arial;
+  font-size: 1.17em;
+  font-weight: bold;
 }
 
 .tabletext{
