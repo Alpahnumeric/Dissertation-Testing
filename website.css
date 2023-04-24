@@ -55,7 +55,7 @@ table {
   width: 90%;
 }
 
-ul {
+ol {
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -63,7 +63,6 @@ ul {
   overflow: hidden;
   background-color: #38444d;
 }
-
 
 li {
   float: left;
