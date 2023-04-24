@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset = "UTF-8">
+    <meta http-equiv = "X-UA-Compatible">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <title>Force-Directed Graph</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script>
+        var d3v4 = window.d3;
+        window.d3 = null;
+    </script>
+    <script src = "https://d3js.org/d3.v5.min.js"></script>
+    <script>
+        var d3v5 = window.d3;
+        window.d3 = null;
+    </script>
+    <script src = "https://d3js.org/d3.v3.js"></script>
+    <script src = https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script> 
+    <script src = "https://d3js.org/d3-selection-multi.v1.min.js"></script>
+    <script src = https://github.com/infusion/Fraction.js></script>
+</head>
+    <link type = "text/css" rel = "stylesheet" href = "./website.css"/>
+    <link type = "text/css" rel = "stylesheet" href = "./force/force.css"/>
+    <link type = "text/css" rel = "stylesheet" href = "./pie/pie.css"/>
+</head>
+
+<body>
+    <ul>
+        <li><a class = "menuOption" onclick='home_viewer();'>Home</a></li>
+        <li><a class = "menuOption" onclick='displayInstructions_viewer();'>Instructions</a></li>
+        <li class = "dropdown">
+            <a class = "aInTopPannel" href = "javascript:void(0)" class = "dropbtn">Examples</a>
+            <div id = "exampleGraphOptions" class = "dropdown-content">
+                <button id = "teaHouse">&#x2615; Tea House</button>
+                <button id = "breastCancer">&#x1F397;Breast Cancer</button>
+                <button id = "montyHall">&#x1F410; Monty Hall Problem</button>
+                <button id = "universityApplication">&#x1F393; University Application</button>
+                <button id = "cancerCauses">&#x2695; Cancer Causes</button>
+            </div>
+        </li>
+        <li class = "dropdown">
+            <a class = "aInTopPannel" href = "javascript:void(0)" class = "dropbtn">Import/Export</a>
+            <div id = "exportOptions" class = "dropdown-content">
+                <button id = "fromJSON">&#11014; Import from JSON</button>
+                <hr>
+                <button id = "toJSON"> &#11015; Download as JSON</button>
+                <button id = "toPNG"> &#11015; Download as PNG</button>
+                <li><input type = "file" id = "uploadFile" class = "uploadFile" > </li>	
+            </div>
+        </li>
+    </ul>
+    <div class = "pieAndNetworkDiv">
+        <div class = "leftContainer" id = "networkContainer">
+            <p id = "networkErrorAlert" class = "pFormatting error" ></p>
+            <svg id = "networkSVG">
+                <div id = "pieLabels"></div>
+            </svg> 
+            <rect id = "networkSVGReaction"/>
+            <div class = "leftBelowNetworkDiv"></div>
+            <div class = "rightBelowNetworkDiv"></div>
+            <p id = "zoomAmountLabel" class = "zoom">1</p>
+            <p id = "zoomIndicatorLabel" class = "zoom">Zoom Scale:&nbsp;</p>
+            <h3 id = "probTableLabel" class = "probTableLabel"></h3>
+            <p id = "probTableArrow" class = "inline symbol"></p>
+            <p id = "updatedTableIndicator" class = "updatedprobTableIndicator"></p>
+        </div>
+        <div class = "rightContainer">
+            <div class = "pieContainer" id = "pieContainer">
+                <header>
+                    <h1 id = "pieChartName">Welcome!</h1>
+                    <input class = "pieChartNameInput" id = "pieChartNameInput" type = "text">
+                    <span class = "pieChartDependencyIndicator" id = "pieChartDependencyIndicator"></span>
+                    <button id = "renameButton" class = "renameButton">Rename Variable</button> 
+                </header>
+                <div> 
+                    <div id = "sectorSelectionContainer" class = "inline">
+                        <label id = "pieInstruction1"> Click on a pie chart to view it.</label>
+                    </div>
+                    <p id = "pieInstruction2" class = "pFormatting"></p> 
+                    <label for = "sectorName">Value:&nbsp;</label>
+                    <input type = "text" id = "sectorName" required>
+                    <br>
+                    <br>
+                    <label for = "switch">Probability:</label>
+                    <label class = "switch">
+                        <input type = "checkbox" id = "switchCheckBox" value = "1" onclick = "decimalOrFraction()">
+                        <label for = "switchCheckBox" data-on = "Fraction" data-off = "Decimal" class = "switchSlider"></label>
+                    </label>
+                    <input type = "number" id = "sectorDecimal" min = "0.01" max = "0.99" step = ".01" class = "valueInput">
+                    <input type = "number" id = "sectorNumerator" min = "1" max = "100"  step = "1" class = "valueInput fractionInput">
+                    <!--- &nbsp is added whitespace -->
+                    <label for = "numeratorDenominatorDivide" id = "numeratorDenominatorDivide" class = "fractionInput">/</label>
+                    <input type = "number" id = "sectorDenominator" min = "2" max = "100"  step = "1" class = "fractionInput">  
+                    <!--- placeholder = "1" -->
+                    <button id = "pieSectorAddOrModify">Add</button>
+                    <p id = "pieErrorAlert" class = "pFormatting error"></p>
+                    <br>
+                </div>
+                <div id = "pieChartDiv" class = "pieChartDiv"></div>
+                <label id = "pieSumToOneText" for = "pieSumToOneIndicator"></label>
+                <label class = "symbol" id = "pieSumToOneIndicator"></label>
+                <label id = "pieSum"></label>
+                <button id = "updateTableButton" class = "updateTableButton" >Update Table</button> 
+                <p id = "updateTableArrow" class = "arrow pFormatting">&nbsp;</p>
+            </div>
+            <div id = "instructionsContainer" class = "instructionsContainer">
+                <header>
+                    <h1 id = "pieChartName">Instructions</h1>
+                </header>
+                <h2>Graph Commands</h2>
+                <h3 class = "colouredh3">Variable Nodes</h3>
+                <p><span class = "boldInstruction">&#10133; Add</span> - Click the canvas</p>
+                <p><span class = "boldInstruction">&#128270; View</span> - Click the node</p>
+                <p><span class = "boldInstruction"> &#8596; Move</span> - Press shift and drag</p>
+                <p><span class = "boldInstruction">&#128683; Delete</span> - Press shift and backspace</p>
+                <br>
+                <h3 class = "colouredh3">Conditional Dependency Links</h3>
+                <p><span class = "boldInstruction">&#10133; Add</span> - Click and drag between nodes</p>
+                <p><span class = "boldInstruction">&#128270; View</span> - Click</p>
+                <p><span class = "boldInstruction">&#128683; Delete</span> - Press shift and backspace</p>
+                <br>
+                <h2>Pie Chart Commands</h2> 
+                <p><span class = "boldInstruction">&#128270; View Pie</span> - Click node in network</p>
+                <p><span class = "boldInstruction">&#128270; View Sector</span> - Click or use the drop-down</p>
+                <p><span class = "boldInstruction">&#128683; Delete Sector</span> - Press shift and backspace</p>
+                <p><span class = "boldInstruction">&#128064; Observe Value</span> - Click that sector and press enter</p>
+            </div>
+        </div>
+    </div>
+    <div class = "tableContainer">
+        <table id = "conditionalProbabilityTable"></table>
+    </div>
+    <script src = "general-viewer.js" charset = "utf-8"></script> 
+    <script src = "lib/fileSaver.js" charset = "utf-8"></script>
+    <script src = "lib/saveSvgAsPng.js" charset = "utf-8"></script>
+    <script src = "menu/menu-presenter.js" charset = "utf-8"></script> 
+    <script src = "menu/menu-viewer.js" charset = "utf-8"></script> 
+    <script src = "window/window-presenter.js" charset = "utf-8"></script> 
+    <script src = "window/window-viewer.js" charset = "utf-8"></script> 
+    <script src = "load-and-save/loadandsave.js" charset = "utf-8"></script> 
+    <script src = "pie/pie-model.js" charset = "utf-8"></script> 
+    <script src = "table/table-model.js" charset = "utf-8"></script> 
+    <script src = "variableValues/variableValues-model.js" charset = "utf-8"></script> 
+    <script src = "pie/pie-presenter.js" charset = "utf-8"></script>
+    <script src = "force/force-model.js" charset = "utf-8"></script> 
+    <script src = "force/force-presenter.js" charset = "utf-8"></script> 
+    <script src = "force/force-viewer.js" charset = "utf-8"></script> 
+    <script src = "pie/pie-viewer" charset = "utf-8"></script> 
+    <script src = "table/table-presenter.js" charset = "utf-8"></script> 
+    <script src = "table/table-viewer.js" charset = "utf-8"></script>
+    <script src = "variableValues/variableValues-presenter.js" charset = "utf-8"></script> 
+    <script src = "variableValues/variableValues-viewer.js" charset = "utf-8"></script>
+    <script src = "start.js" charset = "utf-8"></script>
+</body>
+</html>

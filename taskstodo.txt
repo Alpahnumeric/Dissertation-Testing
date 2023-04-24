@@ -1,0 +1,282 @@
+Todo Next:
+- COULD SHOW PIE CLICKAGE BY EXPANDING THE STROCK WIDTH + CHANGING ITS COLOUR. 
+
+- IMPORTANT: Fraction/decimal toggling
+
+- Ask for file name for PNG export
+
+- Format JSON output 
+
+- Probability sum not updated when last sector is removed.
+- Possibly include a "Do you want to delete this variable?" when all pie chart sectors are removed
+from the viewer. 
+- If sectors are deleted until there's only one, set it to 100%?
+
+- Split website.css into sections for each folder in direc. 
+
+- Show probability toggle for pie chart viewer? Could be a really helpful addition
+
+- If user tries to add a pie sector that's already there, just update that pie sector
+with the value included?
+
+- Add logos to the drop-down examples menu     (Possibly using Bootstrap?)
+
+- Add an "Adding link" indicator 
+
+- Pull 'Admissons' into debug and test out deletions (think there may be a bug)
+
+- Sort out conditonal renaming -> possibly remove the causal indicator (Tea: yes) when this is being done.
+
+- Fix hovering over of 'examples'
+
+- Turn deleteLinkPrompt() and deleteLinkPrompt() into sync/async code rather than with timeouts. 
+
+- Cache marginal tables so if link is added then directly deleted the maginal table is used.
+
+- Keep drop-down button blue when selecting from it
+
+- Explore colliison detection - possibly GitHub solution is bookmarked
+
+- Due to color vision deficiencies, it’s a good idea to always complement error messages with an icon, 
+e.g., a large exclamation mark on a red background 
+        IMPLEMENT THEN INCLUDE IN DISS
+
+- Colour all links coming from a node in black when that node is dragged?
+
+ESSENTIAL (as written diss this way) - merge in validation for sector add and modify as one of them is missing some.
+
+SORT OUT SECTOR ADDING FOR pie conditional on another pie.
+        The sector added should just create a uniform pie. Right now it resets the entire distrubution to 
+        be uniform. 
+
+ALLOW SECTOR ADDING FOR CONDITIONAL TABLES TOO
+        IF A VALUE Is added, set its probability as 0 in the other prob distributions and put out a message to the user
+        stating that this value has been added to all and can be included by using the drop-down menu. 
+
+CONSIDER SECTOR RENAMING TOO
+        MAYBE DISPLAY A MESSAGE 'DO you want to change this for all CPT pies?'
+
+
+RUN an algo to determine if a fraction is recurring:
+https://www.google.com/search?q=check+if+a+fraction+is+recurring&rlz=1C1VDKB_en-GBGB1004GB1005&oq=check+if+a+fraction+is+recurring&aqs=chrome..69i57j0i22i30j0i390i650l4.7515j0j9&sourceid=chrome&ie=UTF-8
+If it is flag a warning to the user about using a decimal input insead (for sector probabilities)
+
+
+VALUE INPUTS
+- Add a length limit for variable name inputted.
+    Possibly also deny the use of inappropriate words? 
+- Add length limits for variable values inputted
+- Allow fractions to be input in liklihood section
+
+- Prompts don't allow red text, could be confusing between a correct and incorrect message.
+        Add "Accepted!" and "An error has occured." to the top of each prompt sequence. 
+        OR look into a custom format, but then there's issues with security for prompts etc. 
+
+- Have new links added displayed as SelectedLink
+
+- Add "New Link" message to green link being drawn?
+
+- Add defualt colouring to CPTs to make them stand out better from the white background
+- Add backgrounds to the pie section? 
+
+
+- Enable the modification of conditional variable pie charts.
+
+        IF A VALUE Is added, set its probability as 0 in the other prob distributions and put out a message to the user
+        stating that this value has been added to all and can be included by using the drop-down menu. 
+
+ALSO ENABLE NAME CHANGES TOO in CPT PIE SHOWING MODEEE
+
+- "Please enter a name" for variable rename blank error -> possibly change to "Variables must be named"
+and put the original name back in the text box. 
+
+
+- For link deletion causing a reduction in the number of casual dependencies, if for one of the being
+deleted variable values the distrubutions are all the same, then set this distribution instead of a uniform one. 
+
+- For save-as-png include canvas-g tings. 
+
+- Standford duel-coding of drop downs - when "Examples" is clicked render a page explanining the examples? 
+
+SWAP TO BOOTSTRAP icon for better cross-platform support?
+    https://icons.getbootstrap.com/
+
+- In force presenter:
+.attr("style", "font-family: arial; font-size: 14; fill: black; stroke: none; text-anchor: middle");
+Put into CSS?
+
+- Can only input variables as decimals atm - change so that you can input with fractions?
+
+- Possibly make background a very light grey for better separation?
+
+//Add one for pie in windowpresenter. 
+
+
+- Change out JSON so that links is done on id (i.e. name) rather than position in array. 
+
+        AS done in this example: https://medium.com/ninjaconcept/interactive-dynamic-force-directed-graphs-with-d3-da720c6d7811
+
+Change sectorOptions so that drop-down items are deleted and drop-down hidden, rather than the drop-down being deleted.
+    https://stackoverflow.com/questions/3364493/how-do-i-clear-all-options-in-a-dropdown-box
+
+HAVE IT SO THAT WHENEVER SOMETHING IS RE-DISPLAYED, IT'S TEXT/VALUE is also updated.
+        so no older values are ever seen. 
+
+//sum indicator not displaying for conditional pies - see generatePie - the bit on if(!conditionalTable){
+    NEED to change display settings maybe
+
+//Can you merge sectorModify() this stuff with sectorAdd()?
+
+When pie err is thrown, the renaming stuff should be reset too - DON'T THINK THIS IS DONE YET. 
+        I.E. HAVE IT SO THAT WHENEVER AN ERROR IS DISPLAYED, ALL "INPUTS" ARE RESET. 
+
+Implement an "update pie" err whereby IF RENAME IS STILL OCCURING, ASK TO FINISH RENAME 1ST. 
+
+- When displaying conditional pie table -> blank pie. Maybe add name "Conditional" onto it?
+
+Other Todo:
+- Extend everything to 3 conditionals - only works for 2 atm.
+- update other side (decimal/fraction) - either remove or put as equivalent. 
+        Not having a value on the other side makes it obvious whether it's been a decimal or fraction input tho. 
+        Put up note if recurring decimal? 
+- Convert pie's values using decimal/fraction buttons?
+- Decimal/fraction slider could have a value for both.
+        There's then the issues of recurring fractions.
+            If they were represented as "0.3333" then pie likely wouldn't add to 1
+            if student entered those values, and can't be assumed that they did mean
+            1/3.
+- Get "Conditional Table" message in right place using upper and lower screen DIVs
+- 'Selected Node Indicator?'
+- Default locations for graphs. 
+- Stop nodes from going over the edge of the svg.
+ 
+- Clear probability table when sectors of conditonal are added or deleted.
+- Center text in table doesn't seem to work?
+- When added dependent link, conditional table shouldn't be white.
+    Have indicator perhaps that table is newly enlarged? 
+- Have a way to indicate what is being deleted before you do, so a halo on the nodes and corresponding circles. 
+        HIGHLIGHT LINKS UPON DELETE - and possibly pie too?
+- "Cannot remove a value from a node in a Bayesian graph!" add info on why. 
+
+Current Considerations:
+- Have a look at text attributes more
+    - Good websites:
+        https://richardbrath.wordpress.com/2018/11/24/using-font-attributes-with-d3-js/
+        https://www.integral-domain.org/lwilliams/tech/svg_d3/textGen.html
+- Could get rid of update table button - enquire with Alan? 
+- If there's only 1 value in pie, it being conditioned on is irrelevant. 
+- JS vanilla prompt box doesn't support CSS
+    To make error messages displayed in red.
+    Could use a custom prompt box:
+        https://www.cssscript.com/alert-confirm-prompt-popup-attention/
+    May compromise browser compatability. 
+-  Move the conditional table under the pie header label. 
+        But currently BOTTOM may work best due to its size. 
+- Arrow between pie and graph, rather than a button as is done at the minute. 
+        Not sure how to HTML this layout atm. 
+- Include way to highlight currently selected node on graph? Opacity of colour perhaps?
+- Get rid of moving of pie when a sector is selected.
+- Centre LHS pie in the svg. 
+- Connect pieContainerText-style to CSS. 
+- If > 1, add overlap between segments - blend colour. 
+      Doesn't seem possible in D3.JS directly, and blending colour may confuse user. 
+- Display stats values when pie is hovered over.  
+- Uploading JSON files?
+- Add manual positioning for JSON example graphs. 
+        Include force as off. 
+
+UPDATE BUTTON CHANGE
+Got rid of 'update graph' button
+        User has to make 2 changes to make node valid again, so hard to do by mistake. 
+            As removing/adding/modifying a sector will take the sum out of 1.
+            It would have started at 1 due to it being a valid pie. 
+There was issues with its placement (including confusion with 'update table' vs 'update graph')
+    Mention pie -> graph arrow idea. 
+
+Done (POST User Trial):
+- Be able to change node name. 
+- Delete all labels when a new example graph is opened. 
+- When displaying sum, have it as decimal if pie is fully decimal. 
+- Add names to pies so it's easier to identify them 
+- Added node comes in with force on it. Can you fix this initally?
+        Due to d3.fixed(), this has been resolved indirectly
+- Added color shading to arrow
+- Added link selection indicator (black on hover)
+- Added indicator of actual probability sum rather than just yes/no for sum to 1. 
+- Decimal vs Fraction switcher
+- Removing force moving nodes around after inital load-in. 
+- Changed sector labels to inside (previous version, outside, was quite complicated - see labelCode.txt)
+            WRITE ABOUT IN DISS
+- If only 2 sectors, when the value of 1 is updated the other is updated to (1 - v) to
+keep with sum = 1 (power of defaults!)
+- Added delete confirmations for node & link deletions
+
+Done:
+- If pie value is 0, don't draw its label.
+    Such as with Monty Hall Problem
+- MACs don't have delete keys! Sort out. 
+    Deleting is now done via shift + backspace, as backspace is used for text.
+- Colour table text to be the same as sector colour?
+    May cause accessability problems in terms of reading. 
+    Instead added coloured squares
+- Prevent links from being added twice.
+- A node's conditonal table is affected when either:
+        A node it's conditoned on changes (sectors added/deleted/modified)
+        A node it's conditoned on is deleted.
+        A link where it's the target is added/removed. 
+    All of these are now considered - see updateConditionalTable for most of it.
+
+Initally upon input a pie was auomatically made with uniform probabilities. 
+    - Implemented a text input for probability values for non-conditional pies. 
+    - Hit enterif you'd like a uniform pie. 
+    - Should speed up entrance of values into the system. 
+
+- ADDING/DELETING nodes to pie. 
+    THINK I've dealt with all the edge cases, but would be good to check!
+- Have conditionals a color that isn't blue, as it looks the same as an observed.
+    - Gone with green (id 10 on color scale) as that won't likely be used (would require 10 sectors on a pie)
+- Modified from having an "Update Graph" button to updates on graph happening #
+  at the same time as pie updates, provided sum to 1. 
+- Update drop down sector list for add/delete. 
+- Do GREEN  TABLE ENTRY based on whether that value has a table or not. 
+- Deleting link so a node is no longer conditional currently doesn't update until clicked.
+- Include a way to click on sectors that are super small, such as a list of the
+  value names that can be clicked on. 
+    Done via a drop-down menu
+- If a pie node only has 1 value, shouldn't need to select/deselect that one value (i.e. selectedSector by default)
+- Add vertification to check pie chart values sum to 1 (for probabilties)
+- Make LHS svg larger
+- Ensure sector can't be deleted if only one sector. 
+- Sort out colours in LHS pie.
+- Sorting out text/pie size on LHS.
+- Deleting of nodes/links. 
+- Add vertification to ensure sector names within each pie are unique.
+- Move edge arrow to better align with pie size. 
+- When no nodes are left, black name banner still shows the last deleted node. Fix somehow?
+- Uncaught exception when "update graph" pressed when node isn't there atm.
+    - Fix by default pie when all have been deleted. 
+- Sort out default pie when all nodes are removed from graph.
+- Allow update of current pie sector on LHS. 
+    (NOT name attr, as user should instead delete that variable outcome and make another)
+- Text consitency between LHS and RHS
+- LHS compatible with fractions. 
+- Fix gap between LHS and RHS of / in fraction on LHS.
+- 'Sector name cannot be modified' for conditonal - put name back in box when error message is there. 
+- If less than 1, add a white segment to show how it’s not complete. 
+- Pie chart updated after conditionals modified due to node/link delete.
+    Not necessary upon add as selectedNode changes to link origin. 
+- When pie is deleted, default pie is displayed. 
+- Re-formatted generateNode into functions to avoid a signficant amount of nested IF checks. 
+        Originally both the input of the var's name and its value were in one function. 
+- When both a fraction and decimal value are entered, the decimal is taken.
+    Thus remove the fraction text upon submission, to make it clear it's now 
+    a decimal value. 
+- Have signal that pie chart's values are > 1.
+- Adding link in a way such that node in graph updates to show it's dependent.
+
+DISCUSS DEFAULT PIE IN DISS 
+    Initally had as "Outcome" full pie, in defualt first colour. 
+    Now it's more of an outline - use law from Interaction Design about shapes. 
+
+Thought delay in update is due to the complex logic meaning it can't happen on that "tick". 
+Was not - needed to call updateGraph at the end to lock in all changes. 

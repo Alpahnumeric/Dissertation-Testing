@@ -1,0 +1,54 @@
+{
+    "nodes": [
+        {
+        "name": "Cancer",
+        "values": [
+            "True",
+            "False"
+        ],
+        "marginalTable": [
+            {
+            "label": "True",
+            "id": 1,
+            "value": 0.14
+            },
+            {
+            "label": "False",
+            "id": 2,
+            "value": 0.86
+            }
+        ],
+        "observedValue": null,
+        "conditionalTable": null,
+        "x": 461.4713736435209,
+        "y": 120.71709838079121
+        },
+        {
+        "name": "Screening Result",
+        "values": [
+            "True",
+            "False"
+        ],
+        "marginalTable": null,
+        "observedValue": null,
+        "conditionalTable": [
+            [
+            0.73,
+            0.27
+            ],
+            [
+            0.12,
+            0.88
+            ]
+        ],
+        "x": 457.1557041437709,
+        "y": 378.1073441666922
+        }
+    ],
+    "links": [
+        {
+        "source": 0,
+        "target": 1
+        }
+    ]
+}

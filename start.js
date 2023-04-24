@@ -1,0 +1,2 @@
+startForce();
+generatePie(false);

@@ -1,0 +1,57 @@
+div.tooltip{
+  position: absolute;
+  text-align: center;
+  min-width: 100;
+  width: auto;
+  min-height: 25;
+  height: auto;
+  padding: 5px;
+  font-family: Arial;
+  font-size: 15;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border: 0px;
+  border-radius: 5px;
+  pointer-events: none;
+  stroke: none;
+  opacity: 1;
+}
+
+div.arrow{
+  fill: rebeccapurple;
+}
+
+.svg-style{
+  border: 2px outset black
+}
+
+  
+rect {
+  fill: white;
+}
+
+line.link {
+  stroke: #909090;
+  stroke-opacity: 0.8;
+  stroke-width: 6px;
+}
+
+line.newLine {
+  stroke: #000000;
+  stroke-opacity: 0.8;
+  stroke-width: 6px;
+}
+
+line.deleting {
+  stroke: #FF0000;
+}
+
+line.selected:not(.deleting) {
+  stroke: #080808;
+  stroke-opacity: 0.8;
+}
+
+line.link:hover:not(.deleting, .selected) {
+  stroke: #505050;
+}
+

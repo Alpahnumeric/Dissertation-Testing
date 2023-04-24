@@ -1,0 +1,364 @@
+body {
+    background-color:white;
+}
+
+button {
+  font-family: Arial;
+}
+
+input {
+  font-family: Arial;
+  display: inline-block;
+}
+
+label {
+  display: inline-block;
+  cursor: default;
+  font-family: Arial;
+}
+
+.probTableLabel {
+  margin-top: 0.75em;
+  display: inline;
+  text-align: center;  
+}
+
+.tabletext{
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  margin-right: 0;
+  font-family: Arial;
+  font-size: 1em;
+  text-align: center;  
+}
+
+.square{
+  font-size: 1.5em;
+}
+
+.pFormatting{
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-family: Arial;
+}
+
+table {
+  text-align: center;
+  margin: auto;
+  width: 90%;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  height: 6vh;
+  overflow: hidden;
+  background-color: #38444d;
+}
+
+
+li {
+  float: left;
+}
+
+li a, .dropbtn .topBar {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-family: Arial;
+}
+
+li a:hover, .dropdown:hover .dropbtn .topBar {
+  background-color: darkblue;
+}
+
+li.dropdown {
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 100px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content button {
+  background:none;
+  border:none; 
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+
+.dropdown-content button:hover {background-color: #f1f1f1;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.uploadFile {
+  display:none
+}
+
+.renameButton {
+  margin-top: 5%;
+  margin-right: 1%;
+  float: right;
+  display: none;
+}
+
+.pieChartNameInput{
+  width: 70%;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  display: none;
+  font-weight: bold;
+  font-family: Arial;
+}
+
+.leftContainer {
+  display: block;
+  float: left;
+  margin-left: 1%;
+  width: 59%;
+}
+
+.rightContainer {
+  display: block;
+  float: right;
+  margin-right: 1%;
+  width: 36%;
+}
+
+.pieChartDiv {
+  display: block;
+  margin-left: 10%;
+  margin-bottom: 2%;
+}
+
+.tableContainer2 {
+  background-color: red;
+}
+
+.pieAndNetworkDiv {
+  background-color: white;
+  /*Setting position to relative will centre pie labels*/
+}
+
+.updateTableButton {
+  margin-top: 15px;
+  width: 100%;
+  display: none;
+}
+
+.select {
+  display: inline-block;
+}
+
+.symbol {
+  font-family: Arial;
+  font-size: 1.5em;
+}
+
+.error {
+  color: red;
+}
+
+.boldInstruction {
+  font-weight: bold;
+}
+
+header {
+  border-bottom: 1px solid #000; 
+  margin-bottom: 25px;
+}
+
+header > h1 { 
+  display: inline-block; 
+  font-size: 2em;
+  font-weight: bold;
+  font-family: Arial;
+}
+
+header .pieChartDependencyIndicator{ 
+  margin-top: 0.47em;
+  margin-bottom: 0.47em;
+  margin-right: 0px;
+  margin-left: 10px;
+  font-family: Arial;
+  font-size: 15pt;
+}
+
+h2 {
+  font-family: Arial;
+}
+
+h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: Arial;
+}
+
+.colouredh3 {
+  color: darkblue;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: Arial;
+}
+
+b {
+  display: inline-block;
+  font-family: Arial;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.arrow{
+  text-align: center;
+  font-family: Arial;
+  font-size: 1.5625em;
+  display: block;
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+
+label { 
+  display: inline-block;
+}
+
+input {
+  display: inline-block;
+}
+
+button { 
+  display: table-row;
+}
+
+form { 
+  display: table-row;
+}
+
+.instructionsContainer {
+  display: none;
+}
+
+.pieContainer {
+  display: block;
+}
+
+.probTableLabel{
+  display: inline-block;
+  margin-left: 6%
+}
+
+.td{
+  width: 1px;
+  white-space: nowrap;
+}
+
+.updatedprobTableIndicator{
+  display: inline-block;
+  color: green;
+}
+
+.valueInput {
+  margin-left: 20px;
+}
+
+.fractionInput {
+  display: none;
+}
+
+.menuOption{
+  cursor: pointer;
+}
+
+.switch input[type="checkbox"]{
+  display: inline-block;
+  opacity: 0;
+  cursor: pointer;
+  margin-left: 0px;
+  margin-right: 0px;
+  font-size: 12px;
+}
+
+.switch > .switchSlider {
+  display: inline-block;
+  width: 140px;
+  height: 30px;
+  background: #cdcbcb;
+  border-radius: 25px;
+  position: relative;
+}
+
+.switch > .switchSlider:before {
+  content: attr(data-on);
+  position: absolute;
+  font-size: 12px;
+  font-weight: 500;
+  top: 7px;
+  right: 20px;
+}
+
+.switch > .switchSlider:after {
+  content: attr(data-off);
+  position: absolute;
+  width: 70px;
+  height: 16px;
+  background: white;
+  border-radius: 25px;
+  left: 2px;
+  top: 2px;
+  text-align: center;
+  transition: all 0.5s ease;
+  padding: 5px 0px;
+}
+
+.switch input[type = "checkbox"]:checked + .switchSlider:after {
+  content: attr(data-on);
+  left: 70px;
+}
+
+.switch input[type = "checkbox"]:checked + .switchSlider:before {
+  content: attr(data-off); 
+  left: 20px;
+}
+
+.leftBelowNetworkDiv {
+  float: left;
+  background-color: aqua;
+}
+
+.rightBelowNetworkDiv {
+  float: right;
+  background-color: blue;
+}
+
+.zoom{
+  margin-top: 0.25em;
+  right: 0px;
+  float: right;
+  font-family: Arial;
+  font-size: 13px;
+}

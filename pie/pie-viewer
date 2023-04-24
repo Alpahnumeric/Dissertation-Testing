@@ -1,0 +1,81 @@
+//----------------------------------VIEWER -> PRESENTER-----------------------------------
+clickListener_viewer("renameButton", renamePieOnClick);
+clickListener_viewer("pieSectorAddOrModify", addOrModifyOnClick);
+//----------------------------------VIEWER <- PRESENTER-----------------------------------
+function throwPieError_viewer(errorText){
+    textUpdate_viewer("pieErrorAlert", errorText);
+    setTimeout(function () {textRemove_viewer("pieErrorAlert");}, 3000);
+}
+
+function checkedGet_viewer(elementID){
+    var element = document.getElementById(elementID);
+    return element.checked;
+};
+
+function valueUpdate_viewer(elementID, value){
+    var element = document.getElementById(elementID);
+    element.value = value;
+    return element;
+}
+
+function valueGet_viewer(elementID){
+    var element = document.getElementById(elementID);
+    return element.value;
+}
+
+function fractionClear_viewer(){
+    valueUpdate_viewer('sectorNumerator', "");
+    valueUpdate_viewer('sectorDenominator', "");
+}
+
+function inputsClear_viewer(){
+    valueUpdate_viewer('sectorDenominator', "");
+    fractionClear_viewer();
+}
+
+function inputSwitchState_viewer(){
+    var inputSwitch = document.getElementById('switchCheckBox');
+    return inputSwitch.checked;
+}
+
+function pieInstructionsUpdate_viewer(upperText, lowerText){
+    //Pie instructions are spread across two HTML elements, so this function,
+    //while adding reducancy, is helpful for ease of programmability.
+    textUpdate_viewer("pieInstruction1", upperText);
+    textUpdate_viewer("pieInstruction2", lowerText);
+}
+
+function changeFraction_viewer(display){
+    displayUpdate_viewer("sectorNumerator", display); 
+    displayUpdate_viewer("sectorDenominator", display); 
+    displayUpdate_viewer("numeratorDenominatorDivide", display); 
+}
+
+function displayPie_viewer(pieChartName){
+    //Removals
+    displayUpdate_viewer("instructionsContainer", "none");
+    displayUpdate_viewer("pieChartNameInput", "none");
+    //Clears
+        //Input boxes
+    inputsClear_viewer();
+        //Depedency Indicator
+    textRemove_viewer("pieChartDependencyIndicator");
+        //Sum to one visualisation
+    textRemove_viewer("pieSum");
+    textRemove_viewer("pieSumToOneText");
+    textRemove_viewer("pieSumToOneIndicator");
+
+        //Instructions
+    textRemove_viewer("pieInstruction1");
+    textRemove_viewer("pieInstruction2");
+    
+    //Additions
+    displayUpdate_viewer("pieContainer", "block");
+    displayUpdate_viewer("pieChartName", "inline-block");
+    textUpdate_viewer("pieChartName", pieChartName);
+}
+
+function displayRename_viewer(){
+    displayUpdate_viewer("renameButton", "inline-block");
+    textUpdate_viewer("renameButton", "Rename Variable");
+}

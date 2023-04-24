@@ -1,0 +1,153 @@
+{
+    "nodes": [
+      {
+        "name": "Class Difficulty",
+        "values": [
+          "Easy",
+          "Hard"
+        ],
+        "marginalTable": [
+          {
+            "label": "Easy",
+            "id": 1,
+            "value": 0.6
+          },
+          {
+            "label": "Hard",
+            "id": 2,
+            "value": 0.4
+          }
+        ],
+        "observedValue": null,
+        "conditionalTable": null,
+        "x": 781.1698006701428,
+        "y": 148.87650498238935
+      },
+      {
+        "name": "Student Intelligence",
+        "values": [
+          "Low",
+          "High"
+        ],
+        "marginalTable": [
+          {
+            "label": "Low",
+            "id": 1,
+            "value": 0.7
+          },
+          {
+            "label": "High",
+            "id": 2,
+            "value": 0.3
+          }
+        ],
+        "observedValue": null,
+        "conditionalTable": null,
+        "x": 302.2573894610146,
+        "y": 147.1508158953648
+      },
+      {
+        "name": "Grade",
+        "values": [
+          "A",
+          "B",
+          "C"
+        ],
+        "marginalTable": null,
+        "observedValue": null,
+        "conditionalTable": [
+          [
+            [
+              0.3,
+              0.4,
+              0.3
+            ],
+            [
+              0.9,
+              0.08,
+              0.02
+            ]
+          ],
+          [
+            [
+              0.05,
+              0.25,
+              0.7
+            ],
+            [
+              0.5,
+              0.3,
+              0.2
+            ]
+          ]
+        ],
+        "x": 544.4758393622054,
+        "y": 203.67231070920096
+      },
+      {
+        "name": "Admisson Test",
+        "values": [
+          "High",
+          "Low"
+        ],
+        "marginalTable": null,
+        "observedValue": null,
+        "conditionalTable": [
+          [
+            0.95,
+            0.05
+          ],
+          [
+            0.2,
+            0.8
+          ]
+        ],
+        "x": 301.458573394332,
+        "y": 379.42928620873437
+      },
+      {
+        "name": "Recommendation Letter",
+        "values": [
+          "Weak",
+          "Strong"
+        ],
+        "marginalTable": null,
+        "observedValue": null,
+        "conditionalTable": [
+          [
+            0.1,
+            0,
+            9
+          ],
+          [
+            0.4,
+            0.6
+          ],
+          [
+            0.99,
+            0.1
+          ]
+        ],
+        "x": 548.9694928608444,
+        "y": 418.23713550861277
+      }
+    ],
+    "links": [
+      {
+        "source": 0,
+        "target": 2
+      },
+      {
+        "source": 1,
+        "target": 2
+      },
+      {
+        "source": 1,
+        "target": 3
+      },
+      {
+        "source": 2,
+        "target": 4
+      }
+    ]
+  }
