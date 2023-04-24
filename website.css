@@ -124,14 +124,25 @@ li.dropdown {
   display: none;
 }
 
-.pieChartNameInput{
-  width: 70%;
+.pieChartName {
+  display: inline-block;
   font-size: 2em;
   margin-top: 0.67em;
   margin-bottom: 0.67em;
-  display: none;
+  margin-left: 0;
+  margin-right: 0;
   font-weight: bold;
   font-family: Arial;
+}
+
+.pieChartNameInput {
+  display: none;
+  font-size: 2em;
+  margin-top: 0.67em;
+  margin-bottom: 0.67em;
+  font-weight: bold;
+  font-family: Arial;
+  width: 70%;
 }
 
 .leftContainer {
