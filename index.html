@@ -28,8 +28,8 @@
 
 <body>
     <ul>
-        <li tabindex="0"><a class = "menuOption" onclick='home_viewer();'>Home</a></li>
-        <li tabindex="0"><a class = "menuOption" onclick='displayInstructions_viewer();'>Instructions</a></li>
+        <li tabindex="0"><a class = "menuOption" onclick='home_viewer();' href = "javascript:home_viewer();">Home</a></li>
+        <li tabindex="0"><a class = "menuOption" onclick='displayInstructions_viewer();' href = "javascript:displayInstructions_viewer();"'>Instructions</a></li>
         <li tabindex="0" class = "dropdown">
             <a class = "aInTopPannel dropbtn" href = "javascript:void(0)">Examples</a>
             <div id = "exampleGraphOptions" class = "dropdown-content">
@@ -54,25 +54,22 @@
     <div class = "pieAndNetworkDiv">
         <div class = "leftContainer" id = "networkContainer">
             <p id = "networkErrorAlert" class = "pFormatting error" ></p>
-            <svg id = "networkSVG" >
-                <div id = "pieLabels"></div>
-            </svg> 
-            <rect id = "networkSVGReaction"/>
+            <svg id = "networkSVG" > <div id = "pieLabels"></div> </svg> 
             <div class = "leftBelowNetworkDiv"></div>
             <div class = "rightBelowNetworkDiv"></div>
             <p id = "zoomAmountLabel" class = "zoom">1</p>
             <p id = "zoomIndicatorLabel" class = "zoom">Zoom Scale:&nbsp;</p>
-            <h3 id = "probTableLabel" class = "probTableLabel"></h3>
+            <h3 id = "probTableLabel" class = "probTableLabel" aria-hidden = "true"></h3>
             <p id = "probTableArrow" class = "inline symbol"></p>
             <p id = "updatedTableIndicator" class = "updatedprobTableIndicator"></p>
         </div>
         <div class = "rightContainer">
             <div class = "pieContainer" id = "pieContainer">
                 <header>
-                    <h1 tabindex="0" id = "pieChartName">Welcome!</h1>
-                    <input tabindex="0" class = "pieChartNameInput" id = "pieChartNameInput" type = "text">
-                    <span tabindex="0" class = "pieChartDependencyIndicator" id = "pieChartDependencyIndicator"></span>
-                    <button tabindex="0"  id = "renameButton" class = "renameButton" role="button">Rename Variable</button> 
+                    <h1 tabindex = "0" id = "pieChartName">Welcome!</h1>
+                    <input tabindex = "0" class = "pieChartNameInput" id = "pieChartNameInput" type = "text">
+                    <span tabindex = "0" class = "pieChartDependencyIndicator" id = "pieChartDependencyIndicator"></span>
+                    <button tabindex = "0"  id = "renameButton" class = "renameButton" role="button">Rename Variable</button> 
                 </header>
                 <div> 
                     <div id = "sectorSelectionContainer" class = "inline">
@@ -87,7 +84,7 @@
                         <input type = "checkbox" id = "switchCheckBox" value = "1" onclick = "decimalOrFraction()">
                         <label for = "switchCheckBox" data-on = "Fraction" data-off = "Decimal" class = "switchSlider"></label>
                     </label>
-                    <input type = "number" id = "sectorDecimal" aria-label = "Decimal probability of the sector" min = "0.01" max = "0.99" step = ".01" class = "valueInput">
+                    <input type = "number" id = "sectorDecimal" aria-label = "Decimal probability of the sector" min = "0.01" max = "0.99" step = "0.01" class = "valueInput">
                     <input type = "number" id = "sectorNumerator" aria-label = "Numerator of the fractional probability of the sector" min = "1" max = "100"  step = "1" class = "valueInput fractionInput">
                     <!--- &nbsp is added whitespace -->
                     <label for = "sectorDenominator" id = "numeratorDenominatorDivide" class = "fractionInput">/</label>

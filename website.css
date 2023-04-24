@@ -300,7 +300,7 @@ form {
   cursor: pointer;
   margin-left: 0px;
   margin-right: 0px;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .switch > .switchSlider {
@@ -360,5 +360,5 @@ form {
   right: 0px;
   float: right;
   font-family: Arial;
-  font-size: 13px;
+  font-size: 15px;
 }
