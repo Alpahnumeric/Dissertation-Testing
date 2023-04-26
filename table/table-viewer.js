@@ -9,6 +9,7 @@ clickListener_viewer("updateTableButton", tableUpdateButtonClick);
 function table_viewer(){ 
     textUpdate_viewer("probTableLabel", "Conditional Probability Table");
     textUpdate_viewer("probTableArrow", "↴");
+    textUpdate_viewer("updatedTableIndicator", "\u00A0\u00A0\u00A0\u00A0 Click an entry to view its pie chart");
     tableBorder_viewer("2");
     //updateTableButton and updateTableArrow are only displayed once a cell is clicked.
     return table;
@@ -23,6 +24,7 @@ function tableRemove_viewer(){
     tableEmpty_viewer();
     textRemove_viewer("probTableLabel");
     textRemove_viewer("probTableArrow");
+    textRemove_viewer("updatedTableIndicator");
     tableBorder_viewer("0");
     return table;
 }
