@@ -163,12 +163,11 @@ li.dropdown {
 .pieChartDiv {
   display: block;
   margin-left: 10%;
+  margin-top: 0%;
   margin-bottom: 2%;
 }
 
-.tableContainer2 {
-  background-color: red;
-}
+
 
 .updateTableButton {
   margin-top: 15px;
@@ -278,7 +277,8 @@ form {
 
 .probTableLabel{
   display: inline-block;
-  margin-left: 6%
+  margin-left: 6%;
+
 }
 
 .td{

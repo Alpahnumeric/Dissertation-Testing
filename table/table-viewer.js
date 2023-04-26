@@ -9,7 +9,7 @@ clickListener_viewer("updateTableButton", tableUpdateButtonClick);
 function table_viewer(){ 
     textUpdate_viewer("probTableLabel", "Conditional Probability Table");
     textUpdate_viewer("probTableArrow", "\u21B4");
-    textUpdate_viewer("updatedTableIndicator", "\u00A0\u00A0\u00A0\u00A0 Click an entry to view its pie chart.");
+    textUpdate_viewer("updatedTableIndicator", "\u00A0\u00A0\u00A0\u00A0 Select a combination of parent values to view a pie chart.");
     tableBorder_viewer("2");
     //updateTableButton and updateTableArrow are only displayed once a cell is clicked.
     return table;
@@ -79,9 +79,51 @@ function format1DCellTextBold_viewer(cellVariable, cellValue, cellColour){
 
 function format2DCellText_viewer(variable1, value1, colour1, variable2, value2, colour2){
     var textOfCell = format1DCellTextBold_viewer(variable1, value1, colour1)
-    + ", " 
+    + "<BR>" 
     + format1DCellTextBold_viewer(variable2, value2, colour2);
     return textOfCell
+}
+
+function horizontalParentHeader_viewer(headerLength){
+    var parentHeader = document.createElement("th");
+    parentHeader.colSpan = headerLength;
+    return parentHeader;
+}
+
+function verticalParentHeader_viewer(headerLength){
+    var parentHeader = document.createElement("th");
+    parentHeader.rowSpan = headerLength;
+    parentHeader.padding = 0;
+    return parentHeader;
+}
+
+function horizontalParentHeaderText_viewer(text){
+    var parentText = document.createElement("p");
+    parentText.classList.add("tabletext");
+    parentText.innerHTML = "Parent Variable: " + text;
+    parentText.textAlign = "center"
+    return parentText;
+}
+
+function verticalParentHeaderText_viewer(text){
+    var parentText = document.createElement("p");
+    parentText.classList.add("tabletext");
+    parentText.innerHTML = "Parent Variable: " + "<BR>"  + text;
+    parentText.textAlign = "center"
+    return parentText;
+}
+
+function TwoDimensionalTableGap(){ //So it doesn't have a bottom border
+    var header = document.createElement("th");
+    header.colSpan = 2;
+    header.rowSpan = 2;
+    return header;
+}
+
+
+function valueHeader_viewer(){
+    var header = document.createElement("th");
+    return header;
 }
 
 function cell_viewer(elementID, backgroundColour){

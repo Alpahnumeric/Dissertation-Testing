@@ -28,8 +28,14 @@ function generateTable(){
     var tableBody = tableBody_viewer();
     //1D Table
     if(conditionedOnVariables.length === 1){
-      var row = row_viewer();
       var numberOfEntries = conditionedOnLabels[0].length;
+      var parentRow = row_viewer();
+      var parentHeader = horizontalParentHeader_viewer(numberOfEntries);
+      var parentHeaderText = horizontalParentHeaderText_viewer(conditionedOnVariables[0]);
+      parentHeader.appendChild(parentHeaderText);
+      parentRow.appendChild(parentHeader);
+      tableBody.appendChild(parentRow);
+      var row = row_viewer();
       for (let e = 0; e < numberOfEntries; e++) {
           cellPieData = conditionalTable[e];
           if(cellPieData.length == 0){
@@ -52,9 +58,42 @@ function generateTable(){
     if(conditionedOnVariables.length === 2){
       var numberOfRows = conditionedOnLabels[0].length;
       var numberOfColumns = conditionedOnLabels[1].length;
+
+     //Create parent header value row
+      var parentRow = row_viewer();
+      var tableSpacing = TwoDimensionalTableGap();
+      parentRow.appendChild(tableSpacing);
+      var parentHeader = horizontalParentHeader_viewer(numberOfColumns);
+      var parentHeaderText = horizontalParentHeaderText_viewer(conditionedOnVariables[1]);
+      parentHeader.appendChild(parentHeaderText);
+      parentRow.appendChild(parentHeader);
+      tableBody.appendChild(parentRow);
+      
+      //Create header value row
+      var headerRow = row_viewer();
+      for(let c = 0; c < numberOfColumns; c++){
+        var header = valueHeader_viewer();
+        var sector = conditionedOnLabels[1][c];
+        var headerText = cellText_viewer("Value: " + sector.label);
+        header.append(headerText);
+        headerRow.appendChild(header);
+      }
+      tableBody.appendChild(headerRow);
+
+      //Create table rows
       for (let r = 0; r < numberOfRows; r++) {
-        // creates a table row
         var row = row_viewer();
+        if(r === 0){
+            var parentHeader = verticalParentHeader_viewer(numberOfRows + 1);
+            var parentHeaderText = verticalParentHeaderText_viewer(conditionedOnVariables[0]);
+            parentHeader.appendChild(parentHeaderText);
+            row.appendChild(parentHeader);
+        }
+        var header = valueHeader_viewer();
+        var sector = conditionedOnLabels[0][r];
+        var headerText = cellText_viewer(sector.label);
+        header.append(headerText);
+        row.appendChild(header);
         //r * rows + column
         for (let c = 0; c < numberOfColumns; c++) {
           // Create a <td> element and a text node, make the text
