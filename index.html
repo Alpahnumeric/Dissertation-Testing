@@ -30,7 +30,7 @@
     <ol>
         <li><a class = "menuOption" onclick = 'home_viewer();' href = "javascript:home_viewer();">Home</a></li>
         <li><a class = "menuOption" onclick = 'displayInstructions_viewer();' href = "javascript:displayInstructions_viewer();">Instructions</a></li>
-        <li class = "dropdown">
+        <li class = "dropdown" aria-haspopup="true">
             <a class = "aInTopPannel dropbtn" href = "javascript:void(0)">Examples</a>
             <div id = "exampleGraphOptions" class = "dropdown-content">
                 <button id = "teaHouse">&#x2615; Tea House</button>
@@ -40,7 +40,7 @@
                 <button id = "cancerCauses">&#x2695; Cancer Causes</button>
             </div>
         </li>
-        <li tabindex="0" class = "dropdown">
+        <li tabindex="0" class = "dropdown" aria-haspopup="true">
             <a class = "aInTopPannel dropbtn" href = "javascript:void(0)">Import/Export</a>
             <div id = "exportOptions" class = "dropdown-content">
                 <button id = "fromJSON">&#11014; Import from JSON</button>
@@ -83,7 +83,7 @@
                     <br>
                     <label id = "switch" class = "switch">Probability:
                         <input type = "checkbox" id = "switchCheckBox" value = "1" onclick = "decimalOrFraction()" aria-label = "Probability Toggle">
-                        <p id = "switch" data-on = "Fraction" data-off = "Decimal" class = "switch switchSlider inline"></p>
+                        <p data-on = "Fraction" data-off = "Decimal" class = "switchSlider inline"></p>
                     </label>
                     <input type = "number" id = "sectorDecimal" aria-label = "Decimal probability" min = "0.01" max = "0.99" step = "0.01" class = "valueInput">
                     <input type = "number" id = "sectorNumerator" aria-label = "Numerator of fractional probability" min = "1" max = "100"  step = "1" class = "valueInput fractionInput">
