@@ -8,8 +8,8 @@ clickListener_viewer("updateTableButton", tableUpdateButtonClick);
 //----------------------------------VIEWER <- PRESENTER------------------------------------
 function table_viewer(){ 
     textUpdate_viewer("probTableLabel", "Conditional Probability Table");
-    textUpdate_viewer("probTableArrow", "&#8628;");
-    textUpdate_viewer("updatedTableIndicator", "\u00A0\u00A0\u00A0\u00A0 Click an entry to view its pie chart");
+    textUpdate_viewer("probTableArrow", "\u21B4");
+    textUpdate_viewer("updatedTableIndicator", "\u00A0\u00A0\u00A0\u00A0 Click an entry to view its pie chart.");
     tableBorder_viewer("2");
     //updateTableButton and updateTableArrow are only displayed once a cell is clicked.
     return table;

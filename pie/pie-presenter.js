@@ -90,7 +90,7 @@ function generatePie(typeOfUpdate){
   if(math.fraction(1) > sum || math.fraction(1) < sum){ 
     //!== not supported in math.fraction
     if(pieDataset.length !== 0){
-      sumToOne.text("✘");
+      sumToOne.text("\u2718");
       HTMLsumToOne.style.color = 'red';
       var fullyDecimal = valArray.every(val => typeof val === 'number');
       if(fullyDecimal){
@@ -103,7 +103,7 @@ function generatePie(typeOfUpdate){
     fullCirclePieDataset.push({"label": "", "id": 0, "value": 1 - sum});
   }
   else{
-    sumToOne.text("✔");
+    sumToOne.text("\u2714");
     HTMLsumToOne.style.color = 'darkgreen';
     sumDisplay.text("");
     if(conditionalTable === null){ 
