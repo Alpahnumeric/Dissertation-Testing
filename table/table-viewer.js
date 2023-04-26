@@ -30,7 +30,7 @@ function tableRemove_viewer(){
 }
 
 function tableModification_viewer(){
-    textUpdate_viewer("updateTableArrow", "\uD83E\uDC1B"); //HTML code &#129051;
+    textUpdate_viewer("updateTableArrow", "\u2193"); //HTML code &#129051;
     displayUpdate_viewer("updateTableButton", "block");
 
 }
