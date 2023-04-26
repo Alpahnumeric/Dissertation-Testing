@@ -5,6 +5,8 @@ Todo Next:
 
 - Ask for file name for PNG export
 
+- Add red ring to pie viewer pie to show deletion?
+
 - Format JSON output 
 
 - Probability sum not updated when last sector is removed.
