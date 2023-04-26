@@ -751,7 +751,7 @@ function mouseup(){ //Add link
         if (linkbeingChecked.target === selectedTargetNode) { 
           ++conditionsOnTargetNode;
           if(linkbeingChecked.source === selectedNode){
-            throwNetworkError_viewer("This edge is already in the graph!");
+            throwNetworkError_viewer("This edge is a duplicate!");
             finishLinkAdd();
             return;
           }
@@ -765,7 +765,7 @@ function mouseup(){ //Add link
         var cycle = isCyclic();
         if(cycle){
           links.pop();
-          throwNetworkError_viewer("This would add a cycle to the network!");
+          throwNetworkError_viewer("This would add a cycle which isn't allowed in a Bayesian network!");
           finishLinkAdd();
           return;
         }  
@@ -778,7 +778,7 @@ function mouseup(){ //Add link
         }
       }  
       else{
-        throwNetworkError_viewer("A variable can be conditional on at most 2 variables. \n Adding a link to " + selectedTargetNode.name + " would violate this.");
+        throwNetworkError_viewer("A variable can be conditional on at most 2 variables. Adding a link to " + selectedTargetNode.name + " would violate this!");
       }
     }
     else { //Connect link to new node.
@@ -853,7 +853,7 @@ d3.select("#pieUpdated").on('click', function(){
     pieUpdated();
   }
   else{
-    throwPieError_viewer("Probabiltiies must sum to 1!");
+    throwPieError_viewer("Probabilities must sum to 1!");
   }
 });  
 

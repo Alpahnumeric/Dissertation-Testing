@@ -207,7 +207,7 @@ function dropDownSectorSelected(){
       textUpdate_viewer("pieInstruction2", "To add a variable option, enter its value and probability: ");
     }
     else{
-      textUpdate_viewer("pieInstruction2", "When done, press 'Update Table' to confirm any modifications.");
+      textUpdate_viewer("pieInstruction2", "When done, press 'Update Table' to confirm any changes.");
     }
     inputsClear_viewer();
     resetPie();
@@ -281,7 +281,7 @@ function sectorClick(clickedSector){
         if(!isConditional_model()){ 
           textUpdate_viewer("pieSectorAddOrModify", "Add");
           textUpdate_viewer("pieInstruction1", "To view/edit a pie sector, click on it or use the drop-down:");
-          textUpdate_viewer("pieInstruction2", "To add a variable option, enter it's value and probability: ");
+          textUpdate_viewer("pieInstruction2", "To add a variable option, enter its value and probability: ");
         }
         else{
           textUpdate_viewer("pieInstruction1", "To view/edit a pie sector, click on it or use the drop-down:" + "\u00A0");
@@ -360,7 +360,7 @@ function sectorAdd(){
       return;
     }
     if(!nameUnique(sectorName)){
-      throwPieError_viewer("This value is already on this pie chart!");
+      throwPieError_viewer("This value would be a duplicate on this pie chart!");
       inputsClear_viewer();
       return;
     }
@@ -368,7 +368,7 @@ function sectorAdd(){
     if(sectorValue === ""){ //Didn't enter a decimal - i.e. enter as fraction
       fractionClear_viewer();
       if(sectorDen === "" ||sectorNum === ""){
-        throwPieError_viewer("Please enter a decimal or fraction!");
+        throwPieError_viewer("Enter a decimal or fraction!");
         return;
       }
       if(+sectorNum >= +sectorDen){
@@ -381,7 +381,7 @@ function sectorAdd(){
     else{ //Entered Decimal
       sectorValue = +sectorValue;
       if(+sectorValue < 0 || +sectorValue > 1){
-        throwPieError_viewer("The probability of a value occuring must be between 0 and 1");
+        throwPieError_viewer("The probability of a value occurring must be between 0 and 1!");
         valueUpdate_viewer('sectorDecimal', "");
         return;
       }
@@ -402,14 +402,14 @@ function sectorAdd(){
     transitionPie();
   }
   else{
-    throwPieError_viewer("Cannot add values to a node in a Bayesian network!");
+    throwPieError_viewer("You cannot add values to a conditional node!");
   }
 }
 
 function sectorModify(){
   var sectorName = valueGet_viewer("sectorName");
   if(sectorName === ""){
-    throwPieError_viewer("Please enter a value!");
+    throwPieError_viewer("Enter a value!");
     return;
   }
   updateVariableValue_model(selectedSector.label, sectorName);
@@ -419,7 +419,7 @@ function sectorModify(){
     var sectorNum = valueGet_viewer("sectorNumerator");
     var sectorDen = valueGet_viewer("sectorDenominator");
     if(sectorDen === "" ||sectorNum === ""){
-      throwPieError_viewer("Please enter a decimal or fraction!");
+      throwPieError_viewer("Enter a decimal or fraction!");
       return;
     }
     if(+sectorNum >= +sectorDen){
@@ -483,11 +483,11 @@ function renamePieOnClick(){
   else{
     var newPieName = valueGet_viewer("pieChartNameInput");
     if(newPieName === ""){
-      throwPieError_viewer("Please enter a name!");
+      throwPieError_viewer("Enter a name!");
       return;
     }
     if(!nameUnique(newPieName) && (newPieName !== variableName)){
-      throwPieError_viewer("A variable named " + newPieName + " already exists!");
+      throwPieError_viewer("A variable named " + newPieName + " exists!");
       return;
     }
     variableName = newPieName;
@@ -511,7 +511,7 @@ function addOrModifyOnClick(){
     }
   }
   else{
-    throwPieError_viewer("Please select a variable in the network.");
+    throwPieError_viewer("Select a variable in the network.");
   }
 }
 
@@ -588,8 +588,8 @@ function displayUnconditionalPie(d){
 function displayConditionalPie(d, conditionedOnPies, conditionedLabels){
   //Viewer Commands
   displayPie(d,
-    "Click a table cell to bring up the corresponding pie chart.",
-    "To add a variable option, enter it's value and probability: " + "\u00A0"
+    "Click a table cell to bring up its pie chart.",
+    "To add a variable option, enter its value and probability: " + "\u00A0"
   );
   textUpdate_viewer("pieSectorAddOrModify", "Modify");
   displayUnclickedTable();
