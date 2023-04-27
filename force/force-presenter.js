@@ -358,6 +358,7 @@ function updateGraph(){
       .attr("d", arc)
       .style("fill", function(d) {return defaultColorScale(d.data.id);})
       .attr("stroke", "black")
+      .attr('tabindex', 0)
       .transition()
       .style("stroke-width", "1px")
     textOfPies[index]

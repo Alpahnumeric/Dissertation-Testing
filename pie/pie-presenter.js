@@ -250,7 +250,8 @@ function sectorSelected(){
   if(typeof selectedSectorValue === 'number'){ //i.e. The value was entered as a decimal.
     valueUpdate_viewer("sectorDecimal", selectedSector.value);
     if(inputSwitch.checked){ //i.e. on fraction input currently
-      document.getElementById('switchCheckBox').click();                        //<--------------
+      document.getElementById('switchCheckBox').click();  
+      inputSwitch.setAttribute("aria-valuenow", "Decimal");                      //<--------------
     }
   }
   else{ //The value was entered as a math.js fraction, which is an object.
@@ -259,6 +260,7 @@ function sectorSelected(){
     valueUpdate_viewer('sectorDenominator', selectedSectorValue.d);
     if(!inputSwitch.checked){ //i.e. on decimal input currently
       document.getElementById('switchCheckBox').click();
+      inputSwitch.setAttribute("aria-valuenow", "Fraction");
     }
   }
 }
