@@ -132,6 +132,7 @@ function generatePie(typeOfUpdate){
     .append('path')
     .attr('d', pieArc)
     .attr('tabindex', 0)
+    .attr('aria-description', function(d){"Pie sector" + d.data.label})
     .attr('fill', function(d) {return colorScale(d.data.id);})
     .attr("stroke", "black")
     .style("stroke-width", "1px")
