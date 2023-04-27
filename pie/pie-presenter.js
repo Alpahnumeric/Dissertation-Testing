@@ -131,6 +131,7 @@ function generatePie(typeOfUpdate){
     .enter()
     .append('path')
     .attr('d', pieArc)
+    .attr('tabindex', 0)
     .attr('fill', function(d) {return colorScale(d.data.id);})
     .attr("stroke", "black")
     .style("stroke-width", "1px")
