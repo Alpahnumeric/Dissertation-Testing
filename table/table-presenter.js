@@ -56,15 +56,15 @@ function generateTable(){
     }
     //2D Table
     if(conditionedOnVariables.length === 2){
-      var numberOfRows = conditionedOnLabels[0].length;
-      var numberOfColumns = conditionedOnLabels[1].length;
+      var numberOfRows = conditionedOnLabels[1].length;
+      var numberOfColumns = conditionedOnLabels[0].length;
 
      //Create parent header value row
       var parentRow = row_viewer();
       var tableSpacing = TwoDimensionalTableGap();
       parentRow.appendChild(tableSpacing);
       var parentHeader = horizontalParentHeader_viewer(numberOfColumns);
-      var parentHeaderText = horizontalParentHeaderText_viewer(conditionedOnVariables[1]);
+      var parentHeaderText = horizontalParentHeaderText_viewer(conditionedOnVariables[0]);
       parentHeader.appendChild(parentHeaderText);
       parentRow.appendChild(parentHeader);
       tableBody.appendChild(parentRow);
@@ -73,7 +73,7 @@ function generateTable(){
       var headerRow = row_viewer();
       for(let c = 0; c < numberOfColumns; c++){
         var header = valueHeader_viewer();
-        var sector = conditionedOnLabels[1][c];
+        var sector = conditionedOnLabels[0][c];
         var headerText = cellText_viewer("Value: " + sector.label);
         header.append(headerText);
         headerRow.appendChild(header);
@@ -85,35 +85,34 @@ function generateTable(){
         var row = row_viewer();
         if(r === 0){
             var parentHeader = verticalParentHeader_viewer(numberOfRows + 1);
-            var parentHeaderText = verticalParentHeaderText_viewer(conditionedOnVariables[0]);
+            var parentHeaderText = verticalParentHeaderText_viewer(conditionedOnVariables[1]);
             parentHeader.appendChild(parentHeaderText);
             row.appendChild(parentHeader);
         }
         var header = valueHeader_viewer();
-        var sector = conditionedOnLabels[0][r];
-        var headerText = cellText_viewer(sector.label);
+        var sector = conditionedOnLabels[1][r];
+        var headerText = cellText_viewer("Value: " + sector.label);
         header.append(headerText);
         row.appendChild(header);
-        //r * rows + column
         for (let c = 0; c < numberOfColumns; c++) {
           // Create a <td> element and a text node, make the text
           // node the contents of the <td>, and put the <td> at
           // the end of the table row.
-          var cellPieData = conditionalTable[r][c];
-          var cellID = r +  "," + c; //Index of corresponding entry in conditionalTable. 
+          var cellPieData = conditionalTable[c][r];
+          var cellID = c +  "," + r; //Index of corresponding entry in conditionalTable. 
           if(cellPieData.length == 0){
               var cell = cell_viewer(cellID, '#e0e0e0');
           }
           else{
               var cell = cell_viewer(cellID, '#f8f8f8');
           }
-          var sectorLabel1 = conditionedOnLabels[0][r];
+          var sectorLabel1 = conditionedOnLabels[1][r];
           var labelColour1 = defaultColorScale(sectorLabel1.id);
-          var sectorLabel2 = conditionedOnLabels[1][c];
+          var sectorLabel2 = conditionedOnLabels[0][c];
           var labelColour2 = defaultColorScale(sectorLabel2.id);
           var textofCell = format2DCellText_viewer(
-            conditionedOnVariables[0], sectorLabel1.label, labelColour1,
-            conditionedOnVariables[1], sectorLabel2.label, labelColour2);
+            conditionedOnVariables[1], sectorLabel1.label, labelColour1,
+            conditionedOnVariables[0], sectorLabel2.label, labelColour2);
           var cellTextElement = cellText_viewer(textofCell);
           cell.append(cellTextElement);
           row.appendChild(cell);

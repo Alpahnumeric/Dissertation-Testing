@@ -14,7 +14,6 @@ function sectorOptionsDropDownRemove_viewer(){
 }
 
 function sectorOptionSelected_viewer(option){
-    console.log("change option")
     sectorOptionsDropDown.value = option;
     sectorOptionsDropDown.selected = option;
 }

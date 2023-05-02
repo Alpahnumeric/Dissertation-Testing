@@ -364,7 +364,14 @@ function updateGraph(){
       .enter()
       .append("text")
       .attr("d", arc)
-      .text(function(d, i){ return d.data.label})
+      .text(function(d, i){
+        if(d.data.value !== 0){
+          return d.data.label
+        }
+        else{
+          return ""
+        }
+      })
       .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
       .attr("style", "font-family: arial; font-size: 14; fill: black; stroke: none; text-anchor: middle");
     if(resettingPie){
@@ -457,13 +464,8 @@ function updateGraph(){
   networkForce.on("tick", ticked);
 }
 
-function displayVariableOnPie(d){
-  pieNode = d;
-  if(d.conditionalTable === null){
-    displayUnconditionalPie(d);
-  }
-  else{
-    var conditionedOnLabels = [];
+function extractConditionality(d){
+  var conditionedOnLabels = [];
     var conditionedOnPies = [];
     links.forEach(function(l) {
       if (l.target === d) {
@@ -485,8 +487,35 @@ function displayVariableOnPie(d){
         conditionedOnLabels.push(sectorLabelInfo)
       }
     });
+    results = new Array();
+    results.push(conditionedOnLabels);
+    results.push(conditionedOnPies);
+    return results;
+}
+
+function displayVariableOnPie(d){
+  pieNode = d;
+  if(d.conditionalTable === null){
+    displayUnconditionalPie(d);
+  }
+  else{
+    var conditionality = extractConditionality(d);
+    var conditionedOnLabels = conditionality[0];
+    var conditionedOnPies = conditionality[1];
     displayConditionalPie(d, conditionedOnPies, conditionedOnLabels);
   }
+}
+
+function significantUpdate(){
+  //Required for pie viewer updates and inference. 
+  networkForce.stop();
+  for(var i = 0; i < 10; i++){
+    //Each node has < 10 sectors with a unit update adding/deleting a sector.
+    resettingPie = true;
+    updateGraph();
+  }
+  networkForce.start();
+  updateGraph();
 }
 
 function keyup() {
@@ -702,13 +731,7 @@ function addConditionality(sourceNode, targetNode){
     }
   }
   targetNode.conditionalTable = newNodeConditionalTable.slice();
-  networkForce.stop();
-  for(var i = 0; i < 10; i++){
-    //As each node can have up to 10 sectors, and each update adds or deletes a sector.
-    resettingPie = true;
-    updateGraph();
-  }
-  networkForce.start();
+  significantUpdate();
 }
 
 function svgMousedown(){
@@ -828,14 +851,7 @@ function pieUpdated(){
       break;
     }
   }
-  networkForce.stop();
-  for(var i = 0; i < 10; i++){
-    //As each node can have up to 10 sectors, and each update adds or deletes a sector.
-    resettingPie = true;
-    updateGraph();
-  }
-  networkForce.start();
-  updateGraph();
+  significantUpdate();
 }
 
 function updateConditonalityFromPie(){
@@ -1002,6 +1018,38 @@ function keydown(){ //https://www.toptal.com/developers/keycode
       }
     }
   }
+}
+
+function updateGraphAfterInference(inferrenceResults) {
+  var nodesInferred = nodes;
+  for (var n = 0; n < nodesInferred.length; n++) {
+    var node = nodesInferred[n];
+    var inferredProbabilities = inferrenceResults[node.name];
+    if (node.conditionalTable) {
+      node.conditionalTable = null;
+      var marginalTable = new Array();
+      var values = node.values;
+      for (var v = 0; v < values.length; v++) {
+        var label = values[v];
+        var inferredProbability = inferredProbabilities[label];
+        marginalTable.push({
+          "label": label,
+          "id": v + 1,
+          "value": inferredProbability
+        });
+      }
+      node.marginalTable = marginalTable;
+    } else {
+      var marginalTable = node.marginalTable;
+      for (var s = 0; s < marginalTable.length; s++) {
+        var sector = marginalTable[s];
+        var label = sector.label;
+        var inferredProbability = inferredProbabilities[label];
+        sector.value = inferredProbability;
+      }
+    }
+  }
+  significantUpdate(); 
 }
 
 function isCyclic(){ //true means contains a cycle. 

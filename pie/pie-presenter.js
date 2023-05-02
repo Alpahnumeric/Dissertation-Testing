@@ -268,7 +268,6 @@ function sectorSelected(){
 }
 
 function sectorClick(clickedSector){ 
-  console.log("selected sector" + selectedSector)
   if(clickedSector.data.id !== 0){ //As id = 0 indicates pie whitespace. 
     deletingAffectsGraph = false; 
     if(selectedSector === null){
