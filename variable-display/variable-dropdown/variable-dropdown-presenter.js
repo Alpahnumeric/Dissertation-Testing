@@ -16,7 +16,7 @@ function updateVariableValue_model(oldValue, newValue){
   var sectorIndex = variableValues.indexOf(oldValue);
   variableValues[sectorIndex] = newValue;
 }
-//----------------------------------M------------------------------------------------------
+//----------------------------------------------------------------------------------------
 
 function displaySectorOptions(){
   sectorOptionsDropDownRemove_viewer();

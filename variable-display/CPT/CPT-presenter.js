@@ -182,11 +182,9 @@ function tableClick(event){
 
         var cellText = cell.textContent;
         cellTextWithoutSquares = cellText.replace(/[\u25A0]/g,''); //Removes squares from text
-        //var depdencyIndicatorText = "(" + cellTextWithoutSquares + ")";
-        // ^ Displays dependencies, but can cause length issues and is already given by the CPT. 
+        var dependencyText = "(" + cellTextWithoutSquares + ")";
         tableModification_viewer();
-        displayConditionalPieGivenConditionals("", newPieDataset)
-        //If in use dependencyIndicatorText replaces ""
+        displayConditionalPieGivenConditionals(dependencyText, newPieDataset);
     }
 }
 

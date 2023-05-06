@@ -53,3 +53,10 @@ line.link:hover:not(.deleting, .selected) {
   stroke: #505050;
 }
 
+.pathsOfPies {
+  font-family: arial;
+  font-size: 14;
+  fill: black;
+  stroke: none;
+  text-anchor: middle
+}

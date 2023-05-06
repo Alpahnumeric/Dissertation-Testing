@@ -66,7 +66,7 @@ function exampleGraphSelected(event){
       }
   }
   if(example){
-    var fileName = "./Examples/" + example.id + ".json";
+    var fileName = "./CBN/CBN-examples/CBN-examples-model/" + example.id + ".json";
     d3.json(fileName, function(json) {
       changeCBN(json.nodes, json.links);
     });

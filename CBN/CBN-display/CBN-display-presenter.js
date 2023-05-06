@@ -6,8 +6,6 @@ isZoomingKey = false,
 zoomingAllowed = true,
 svg,
 graphEntranceAnimation = true,
-nodes,
-links,
 selectedNode,
 selectedTargetNode,
 selectedLink,
@@ -20,7 +18,8 @@ deletingAffectsGraph = true,
 //Required to associate the "delete" button with both the network and pie, without affecting both when pressing it. 
 //When false, the pie is instead eligible for deletions. It's value is based on what the user last clicked on.
 pieNode,
-pieNameLabel = null;
+pieNameLabel = null
+marginalTableCache = {};
 
 var networkForce = d3.layout.force() //Explore best params
   .charge(-100)  
@@ -110,56 +109,53 @@ var arc = d3.svg.arc()
 var linesg = svg.append("g");
 var piesg = svg.append("g");
 
+//Starting CBN
 nodes = [
-    {
-      "name": "Tea",
-      "values": [
-        "Yes",
-        "No"
+  {
+    "name": "Tea",
+    "values": [
+      "Yes",
+      "No"
+    ],
+    "marginalTable": [
+      {
+        "label": "Yes",
+        "id": 1,
+        "value": "2/3"
+      },
+      {
+        "label": "No",
+        "id": 2,
+        "value": "1/3"
+      }
+    ],
+    "observedValue": null,
+    "conditionalTable": null,
+    "x": 476.87199164307106,
+    "y": 130.86513501578725
+  },
+  {
+    "name": "Scone",
+    "values": [
+      "Yes",
+      "No"
+    ],
+    "marginalTable": null,
+    "observedValue": null,
+    "conditionalTable": [
+      [
+        0.5,
+        0.5
       ],
-      "marginalTable": [
-        {
-          "label": "Yes",
-          "id": 1,
-          "value": 0.6
-        },
-        {
-          "label": "No",
-          "id": 2,
-          "value": 0.4
-        }
-      ],
-      "observedValue": null,
-      "conditionalTable": null,
-      "index": 0,
-      "x": 603.2729776413328,
-      "y": 441.1747234786682,
-      "px": 603.2729776413328,
-      "py": 441.1747234786682
-    },
-    {
-      "name": "Scone",
-      "values": [
-        "Yes",
-        "No"
-      ],
-      "marginalTable": null,
-      "observedValue": null,
-      "conditionalTable": [
-        [
-          0.5,
-          0.5
-        ],
-        [
-          0.25,
-          0.75
-        ]
-      ],
-      "index": 1,
-      "x": 424.80799445690974,
-      "y": 262.14080817974815
-    }
-  ]
+      [
+        0.25,
+        0.75
+      ]
+    ],
+    "x": 478.89853417519566,
+    "y": 368.74570589393903
+  }
+]
 
 links = [{
   "source": 0,
@@ -387,6 +383,38 @@ function updateGraph(){
     }
     index = index + 1;
   }
+
+  //ALTERNATIVE external label positoning 
+  //.attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"})
+      //If the segment's midpoint is on the RHS of the pie, set the text anchor to be the start.
+      //If it's on the LHS, set it to the end.
+     //arc.centroid is calculated using (startAngle + endAngle)/2 and (innerRadius + outerRadius)/2.
+  //.attr("text-anchor", function(d) {
+  //      d.midPoint = (d.endAngle + d.startAngle)/2;
+  //      return d.midPoint > Math.PI ? "end" : "start";
+  //    })
+  //    .attr("transform", function(d) {
+  //        var c = arc.centroid(d),
+  //          x = c[0], y = c[1],
+  //          textOffset = 5,
+  //           h = Math.sqrt(x * x + y * y); 
+  //        return "translate(" + (x/h * (radius + textOffset)) +  ',' + (y/h * (radius + textOffset)) +  ")"; 
+        // The offset brings the text label slightly away from the pie's surface. 
+  //})
+  //em, also known as font size units, are a scalable unit from typography that allows the positioning of text to be dependent on its height. 
+  //If the sector is at the far top or far bottom of the pie chart, a pm buffer is included to prevent the text from
+  //merging into the pie chart. 5 determined via trial and error - is there a better way?
+  //    .attr('dy', d => {
+  //      var dy = 0.35; 
+  //      if (d.midPt < 0.25 * Math.PI || d.midPt > 1.75 * Math.PI) {
+  //        dy += 5.0;
+  //      }
+  //      if (d.midPt < 1.25 * Math.PI || d.midPt > 0.75 * Math.PI) {
+  //        dy -= 5.0;
+  //       }
+  //      return dy + 'em'; 
+  //    })
+
   function addNameLabel(d){
     var pieLabel = document.getElementById("label: " + d.name);
     if(pieLabel){
@@ -573,7 +601,7 @@ function generateNode(mouse, isConditional){
     var marginalTable = [];
     var numberOfValuesInput = valuesInputArray.length;
     for(var s = 0; s < parseInt(numberOfValuesInput); s++){
-      marginalTable.push({"label": valuesInputArray[s], "id": (s + 1), "value": math.fraction(probInputArray[s])});
+      marginalTable.push({"label": valuesInputArray[s], "id": (s + 1), "value": probInputArray[s]});
     }
     var generatedNode = {x: mouse[0], y: mouse[1], values: valuesInputArray, marginalTable: marginalTable, observedValue: null, conditionalTable: null, name: varName};
     nodes.push(generatedNode);
@@ -586,12 +614,17 @@ function generateNode(mouse, isConditional){
       var varName = prompt(promptText);  
       if(varName !== null){
         if(varName.trim().length !== 0){ //I.e. if the varName doesn't just contain spaces. 
-          if(nameUnique(varName)){
-            //Success
-            return varName;
-          } 
+          if(varName.length <= 20){
+            if(nameUnique(varName)){
+              //Success
+              return varName;
+            } 
+            else{
+              promptText = "A variable named" + varName + " already exists!\nEnter another variable name or cancel adding a node:";
+            }
+          }
           else{
-            promptText ="A variable named" + varName + " already exists!\nEnter another variable name or cancel adding a node:"
+            promptText = "Variable names cannot be longer than 20 characters!\nEnter another variable name or cancel adding a node:"
           }
         } 
       }
@@ -615,21 +648,31 @@ function generateNode(mouse, isConditional){
             var numberOfValuesInput = numberOfValuesInput.toString();
             if(numberOfValuesInput > 0 && numberOfValuesInput < 11  && Math.floor(numberOfValuesInput) === +numberOfValuesInput){ //i.e. Natural number 1, 2 or 3
               var EmptyValues = false;
+              var incorrectLength = false;
               for(var valueIndex = 0; valueIndex < numberOfValuesInput; valueIndex++){
                 var value = valuesInputArray[valueIndex];
                 if(value.trim().length === 0){
                   EmptyValues = true;
                 }
+                if(value.length > 15){
+                  incorrectLength = false;
+                  return;
+                }
               }
               if(!EmptyValues){
                 //Success
-                return valuesInputArray;
+                if(!incorrectLength){
+                  return valuesInputArray;
+                }
+                else{
+                  promptText ="Value names must be longer than 15 characters. \nEnter a new value list:"
+                }
               }
               else{
                 promptText ="Value names must not be blank.\nEnter a new value list:"
-              }  
+              }
             }
-            else{
+            else {
               promptText ="The number of values " +  varName + " can take must be a natural number between 1 and 10. \nEnter a new value list:"
             }
           }
@@ -651,22 +694,52 @@ function generateNode(mouse, isConditional){
       if(probInput !== null){
         if(probInput.trim().length !== 0){
           var probInputArray = probInput.split(',');
-          if(!probInputArray.some(isNaN)){
-            var sum = probInputArray.reduce((partialSum, p) => partialSum + parseFloat(p), 0);
-            if(sum == 1.0){
-              if(valuesInputArray.length == probInputArray.length){
-                return probInputArray;
+          var error = false;
+          var negative = false;
+          for(var v = 0; v < probInputArray.length; v++){
+            var value = probInputArray[v];
+            if(isNaN(value)){ //i.e. not numeric
+              try {
+                value = math.fraction(value);
+                if(value < math.fraction(0)){
+                  negative = true;
+                }
+              }
+              catch(err) { //i.e. isn't fractional
+                error = true;
+                console.log("error")
+              } 
+            }
+            else{
+              value = parseFloat(value);
+              if(value < 0){
+                negative = true;
+              }
+            }
+            probInputArray[v] = value;
+          }
+          if(!error){
+            if(!negative){
+              var sum = math.fraction(probInputArray.reduce((partialSum, n) => partialSum.add( new math.fraction(n)), math.fraction(0)));
+              if(!(math.fraction(1) > sum || math.fraction(1) < sum)){ 
+                if(valuesInputArray.length == probInputArray.length){
+                  //SUCCESS
+                  return probInputArray;
+                }
+                else{
+                  promptText = "You entered " + probInputArray.length + " probabilties rather than the " + valuesInputArray.length + " required for your entered values:";
+                }
               }
               else{
-                promptText = "You entered " + probInputArray.length + " probabilties rather than the " + valuesInputArray.length + " required for your entered values:";
+                promptText = "Your probabilties must sum to 1, as " + varName + " must take one of the values of " +  valuesInputArray.toString() + ":";
               }
             }
             else{
-              promptText = "Your probabilties must sum to 1, as " + varName + " must take one of the values of " +  valuesInputArray.toString() + ":";
+              promptText = "Your probabilties cannot be negative: ";
             }
           }
           else{
-            promptText = "Your probabilties must be decimals: ";
+            promptText = "Your probabilties must be decimals or fractions: ";
           }
         }
         else{ //Uniform probabilities
@@ -764,55 +837,14 @@ function mousemove(){
   updateGraph();
 }
 
-function mouseup(){ //Add link
+function mouseup(){
   drawingLine = false;
   if (newLine) {
-    if (selectedTargetNode) { //Connect link to existing node.
-      conditionsOnTargetNode = 0;
-      for(var l = 0; l < links.length; l++){
-        linkbeingChecked = links[l];
-        if (linkbeingChecked.target === selectedTargetNode) { 
-          ++conditionsOnTargetNode;
-          if(linkbeingChecked.source === selectedNode){
-            throwNetworkError_viewer("This edge is a duplicate!");
-            finishLinkAdd();
-            return;
-          }
-        }
-      }
-      if(conditionsOnTargetNode < 2){ 
-        //The maximum links into the node is 2, as another is about to be added.
-        selectedTargetNode.fixed = false;
-        var newLink = {source: selectedNode, target: selectedTargetNode};
-        links.push({source: selectedNode, target: selectedTargetNode});
-        var cycle = isCyclic();
-        if(cycle){
-          links.pop();
-          throwNetworkError_viewer("This would add a cycle which isn't allowed in a Bayesian network!");
-          finishLinkAdd();
-          return;
-        }  
-        else{
-          addConditionality(selectedNode, selectedTargetNode);
-          //resettingPie = true;
-        }            
-        if(pieNode === selectedTargetNode){
-          displayConditionalPie(selectedTargetNode);
-        }
-      }  
-      else{
-        throwNetworkError_viewer("A variable can be conditional on at most 2 variables. Adding a link to " + selectedTargetNode.name + " would violate this!");
-      }
-    }
-    else { //Connect link to new node.
-      var mouse = d3.mouse(svg.node());
-      var newNode = generateNode(mouse, true);
-      if(newNode !== null){
-        links.push({source: selectedNode, target: newNode});
-      }
-    }
-    finishLinkAdd();  
+    linkAdd();
   }
+}
+
+function linkAdd(){
 
   function finishLinkAdd(){
     selectedNode.fixed = false;
@@ -823,32 +855,95 @@ function mouseup(){ //Add link
     newLine = null;
     networkForce.start();
   }
+
+  if (selectedTargetNode) { //Connect link to existing node.
+    conditionsOnTargetNode = 0;
+    for(var l = 0; l < links.length; l++){
+      linkbeingChecked = links[l];
+      if (linkbeingChecked.target === selectedTargetNode) { 
+        ++conditionsOnTargetNode;
+        if(linkbeingChecked.source === selectedNode){
+          throwNetworkError_viewer("This edge is a duplicate!");
+          finishLinkAdd();
+          return;
+        }
+      }
+    }
+    if(conditionsOnTargetNode < 2){ 
+      //The maximum links into the node is 2, as another is about to be added.
+      selectedTargetNode.fixed = false;
+      var newLink = {source: selectedNode, target: selectedTargetNode};
+      links.push({source: selectedNode, target: selectedTargetNode});
+      var cycle = isCyclic();
+      if(cycle){
+        links.pop();
+        throwNetworkError_viewer("This would add a cycle which isn't allowed in a Bayesian network!");
+        finishLinkAdd();
+        return;
+      }  
+      else{ //Success
+        var marginalTable = selectedTargetNode.marginalTable;
+        var targetNodeName = selectedTargetNode.name;
+        marginalTableCache[targetNodeName] = marginalTable;
+        var sourceNodeName = selectedNode.name;
+        delete marginalTableCache.sourceNodeName; 
+        addConditionality(selectedNode, selectedTargetNode);
+      }            
+      if(pieNode === selectedTargetNode){
+        displayConditionalPie(selectedTargetNode);
+      }
+    }  
+    else{
+      throwNetworkError_viewer("A variable can be conditional on at most 2 variables. Adding a link to " + selectedTargetNode.name + " would violate this!");
+    }
+  }
+  else { //Connect link to new node.
+    var mouse = d3.mouse(svg.node());
+    var newNode = generateNode(mouse, true);
+    if(newNode !== null){
+      links.push({source: selectedNode, target: newNode});
+    }
+  }
+  finishLinkAdd();  
 }
 
 function pieNameChange(newName){
-  var pieLabel = document.getElementById("label: " + pieNode.name)
+  var originalName = pieNode.name;
+  var pieLabel = document.getElementById("label: " + originalName)
   pieLabel.setAttribute("id", "label: " + newName);
   pieLabel.innerHTML = newName; 
   for (var index = 0; index < nodes.length; ++index) {
     var n = nodes[index];
-    if(n.name == pieNode.name){
+    if(n.name == originalName){
+      delete marginalTableCache.originalName; 
       n.name = newName;
       nodes[index] = n;
       break;
     }
   }
+  //HIHI
 }
 
 function pieUpdated(){  
+  var pieNodeName = pieNode.name;
   for (var index = 0; index < nodes.length; ++index) {
     var n = nodes[index];
-    if(n.name == pieNode.name){
+    if(n.name == pieNodeName){
       n.values = variableValues;
       n.marginalTable = pieDataset;
       n.observedValue = observedValue;  
       n.conditionalTable = conditionalTable; 
       nodes[index] = n;
+      delete marginalTableCache.pieNodeName; 
       break;
+    }
+  }
+  for(var l = 0; l < links.length; l++){
+    linkbeingChecked = links[l];
+    if (linkbeingChecked.target == pieNode) { 
+      var parentNode = linkbeingChecked.source;
+      var parentNodeName = parentNode.name;
+      delete marginalTableCache.parentNodeName;
     }
   }
   significantUpdate();
@@ -877,17 +972,19 @@ function deleteNodePrompt(remainingLinksAfterDelete, deletedLinksAfterDelete){
   var deletionConfirmation = confirm("You're deleting " + selectedNode.name + " which also removes all of its links.\nThis cannot be undone.");
   deletingLink = new Array();
   if(deletionConfirmation){
-    var displayDifferentPie = false;
+    //var displayDifferentPie = false; (See below)
     if(selectedNode === pieNode){
       displayDefaultPie("Select a node from the graph to view/modify it", "");
     }
+    var name = selectedNode.name;
+    delete marginalTableCache.targetNodeName; 
     var i = nodes.indexOf(selectedNode);
     nodes.splice(i, 1);
     if(pieNameLabel !== null){
       pieNameLabel.remove();
       pieNameLabel = null;
     }
-    var nodeLabel = document.getElementById("label: " + selectedNode.name);
+    var nodeLabel = document.getElementById("label: " + name);
     nodeLabel.remove();
     //Delete connected links:
     deletedLinksAfterDelete.forEach(deleteLink);
@@ -925,17 +1022,23 @@ function updateConditionalTable(affectedNode){
   if(conditionsOnAffectedNode.length === 0){
     //No more conditionals
     var affectedNodeValues = affectedNode.values;
-    var sectorFraction = math.fraction(1, affectedNodeValues.length);
-    var newPieDataset = new Array();
-    for(var s = 0; s < affectedNodeValues.length; s++){
-      newPieDataset.push({"label": affectedNodeValues[s], "id": (s + 1), "value": sectorFraction});
+    var affectedNodeName = affectedNode.name;
+    if(marginalTableCache.hasOwnProperty((affectedNodeName))){
+      var marginalTable = marginalTableCache[affectedNodeName];
+      affectedNode.marginalTable = marginalTable;
     }
-    affectedNode.marginalTable = newPieDataset;
+    else{
+      var sectorFraction = math.fraction(1, affectedNodeValues.length);
+      var newPieDataset = new Array();
+      for(var s = 0; s < affectedNodeValues.length; s++){
+        newPieDataset.push({"label": affectedNodeValues[s], "id": (s + 1), "value": sectorFraction});
+      }
+      affectedNode.marginalTable = newPieDataset;  
+    }
     affectedNode.conditionalTable = null;
     resettingPie = true;
   }
   else{
-    affectedNode.conditionalTable = null;
     if(conditionsOnAffectedNode.length >= 1){
       var variableConditionedOn = conditionsOnAffectedNode[0];
       addConditionality(variableConditionedOn, affectedNode);
@@ -966,12 +1069,36 @@ function deleteLinkPrompt(){
   }
 }
 
+function deleteNodeAsSectorsDeleted(){
+  selectedNode = pieNode;
+  initiateDeleteNode();
+}
+
+function initiateDeleteNode(){
+  var remainingLinksAfterDelete = [];
+  var deletedLinksAfterDelete = [];
+  links.forEach(function(l) {
+    if (l.source !== selectedNode && l.target !== selectedNode) {
+      remainingLinksAfterDelete.push(l);
+    }
+    else{
+      deletedLinksAfterDelete.push(l);
+    }
+  });
+  deletingLink = deletedLinksAfterDelete.slice();
+  updateGraph();
+  setTimeout(function () {deleteNodePrompt(remainingLinksAfterDelete, deletedLinksAfterDelete);}, 25);
+}
+
 function deleteLink(link){
   const linkIndex = links.indexOf(link);
   links.splice(linkIndex, 1);
   var affectedNode = link.target; 
-  //Will have had its conditionals reduced.
-  updateConditionalTable(affectedNode);
+  if(affectedNode.conditionalTable){
+    //Will have had its conditionals reduced.
+    updateConditionalTable(affectedNode);
+  }
+  //It won't have a conditional table if it's come from inference. 
   const deleteIndex = deletingLink.indexOf(link);
   deletingLink.splice(deleteIndex, 1);
 }
@@ -994,21 +1121,7 @@ function keydown(){ //https://www.toptal.com/developers/keycode
     case 8: { // delete
       if(deletingAffectsGraph && shift){
         if (selectedNode) { //Node
-          //Highlighting the links associated with this link delete:
-          var remainingLinksAfterDelete = [];
-          var deletedLinksAfterDelete = [];
-          links.forEach(function(l) {
-            if (l.source !== selectedNode && l.target !== selectedNode) {
-              remainingLinksAfterDelete.push(l);
-            }
-            else{
-              deletedLinksAfterDelete.push(l);
-            }
-          });
-          deletingLink = deletedLinksAfterDelete.slice();
-          updateGraph();
-          setTimeout(function () {deleteNodePrompt(remainingLinksAfterDelete, deletedLinksAfterDelete);}, 25);
-          
+          initiateDeleteNode();
         } else if (selectedLink) {  //Link
           deletingLink = [selectedLink];
           updateGraph();
@@ -1018,6 +1131,32 @@ function keydown(){ //https://www.toptal.com/developers/keycode
       }
     }
   }
+}
+
+//Probabilities are all decimal.
+function normalisation(probDistribution){
+  var max = math.max(probDistribution);
+  var min = math.min(probDistribution);
+  var range = max - min;
+  var result = probDistribution.map(p => (p - min) /  range);
+  return result;
+}
+
+function runNormalisation(nodes){
+  for(var i = 0; i < nodes.length; i++){
+    var node = nodes[i];
+    var marginalTable = node.marginalTable;
+    if(marginalTable){
+      var probDistribution = new Array();
+      for(var i = 0; i < marginalTable.length; i++){
+        //This FOR loop seems to be causing time issues.
+        var sector = marginalTable[i];
+        var prob = sector.value;
+        probDistribution.push(prob);
+      }
+      probDistribution = normalisation(probDistribution);
+    }
+  } 
 }
 
 function updateGraphAfterInference(inferrenceResults) {
@@ -1049,7 +1188,11 @@ function updateGraphAfterInference(inferrenceResults) {
       }
     }
   }
-  significantUpdate(); 
+  significantUpdate();
+  if(pieNode){
+    displayVariableOnPie(pieNode);
+  } 
+  //runNormalisation(nodes);
 }
 
 function isCyclic(){ //true means contains a cycle. 
@@ -1114,6 +1257,20 @@ function getSVG(){
 
 function throwNetworkBasedError(errorText){
   throwNetworkError_viewer(errorText)
+}
+
+function restoreCBN(nodeInput, linkInput){
+  for(var i = 0; i < nodes.length; i++){
+    var node = nodes[i];
+    var pieLabel = document.getElementById("label: " + node.name);
+    pieLabel.remove();
+  }
+  nodes = nodeInput;
+  links = linkInput;
+  networkForce = networkForce
+  .nodes(nodes)
+  .links(links);
+  significantUpdate();
 }
 
 function changeCBN(nodeInput, linkInput){

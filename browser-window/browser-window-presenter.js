@@ -1,6 +1,6 @@
 function resizeWindow(){
-    var windowWidth = windowWidth_viewer();
-    var windowHeight = windowHeight_viewer();
+    windowWidth = windowWidth_viewer();
+    windowHeight = windowHeight_viewer();
 
     var svg = document.getElementById("networkSVG");
     svg.setAttribute("width", windowWidth * 0.6);

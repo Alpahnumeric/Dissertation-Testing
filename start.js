@@ -1,2 +1,0 @@
-startForce();
-generatePie(false);

@@ -9,6 +9,6 @@ d3.select("#networkSVGReaction")
     .attr("height", windowHeight_viewer() * 0.75)
 
 function throwNetworkError_viewer(errorText){
-    d3.select("#networkErrorAlert").text(errorText);
+    d3.select("#networkErrorAlert").text("\u2757" + " " + errorText);
     setTimeout(function () {d3.select("#networkErrorAlert").text("");}, 3000);
 }

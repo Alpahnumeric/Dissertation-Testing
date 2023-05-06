@@ -2,8 +2,19 @@
 clickListener_viewer("renameButton", renamePieOnClick);
 clickListener_viewer("pieSectorAddOrModify", addOrModifyOnClick);
 //----------------------------------VIEWER <- PRESENTER-----------------------------------
+
+function throwPieAlert_viewer(alertText){
+    document.getElementById("pieErrorAlert").style.color = "#EE8866";
+    textUpdate_viewer("pieErrorAlert", alertText);
+    setTimeout(function () {
+        textRemove_viewer("pieErrorAlert");
+        document.getElementById("pieErrorAlert").style.color = "red";
+    }, 3000);
+}
+
 function throwPieError_viewer(errorText){
     textUpdate_viewer("pieErrorAlert", errorText);
+    inputsClear_viewer()
     setTimeout(function () {textRemove_viewer("pieErrorAlert");}, 3000);
 }
 
@@ -28,9 +39,25 @@ function fractionClear_viewer(){
     valueUpdate_viewer('sectorDenominator', "");
 }
 
+function clearfield_viewer(id){
+    var element = document.getElementById(id);
+    element.value = "";
+}
+
 function inputsClear_viewer(){
-    valueUpdate_viewer('sectorDenominator', "");
-    fractionClear_viewer();
+    clearfield_viewer("sectorDecimal");
+    clearfield_viewer("sectorNumerator");
+    clearfield_viewer("sectorDenominator");
+    clearfield_viewer("sectorName");
+}
+
+//Used post-inference where every node is given marginally. 
+function normalisation(probDistribution){
+    var max = math.max(probDistribution);
+    var min = math.min(probDistribution);
+    var range = max - min;
+    var result = probDistribution.map(p => (p - min) /  range);
+    return result;
 }
 
 function inputSwitchState_viewer(){
@@ -49,6 +76,12 @@ function changeFraction_viewer(display){
     displayUpdate_viewer("sectorNumerator", display); 
     displayUpdate_viewer("sectorDenominator", display); 
     displayUpdate_viewer("numeratorDenominatorDivide", display); 
+}
+
+function hideSumIndicator(){
+    textRemove_viewer("pieSum");
+    textRemove_viewer("pieSumToOneText");
+    textRemove_viewer("pieSumToOneIndicator");
 }
 
 function displayPie_viewer(pieChartName){

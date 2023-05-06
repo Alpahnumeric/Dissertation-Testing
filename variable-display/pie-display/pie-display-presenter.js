@@ -2,8 +2,9 @@
 var selectedSector = null,
 should_delete = false,
 defaultPie = true,
+depdencyIndicatorText = "", //Required state for renaming varibles. 
 defaultColorScale = d3.scale.ordinal().range(['#77AADD', '#EE8866', '#EEDD88', '#FFAABB', '#99DDFF', '#44BB99', '#BBCC33', '#AAAA00', '#DDDDDD']);
-//The usual colourScale is d3.scale.category10() but this doesn't offer blindness accessability. 
+//The default colourScale is d3.scale.category10() but this doesn't offer blindness accessability. 
 
 //pie.js is run before force.js, so any shared variables are declared in pie.js.
 //Use of the same colour scale variable appeared to be necessary upon coming across a bug whereby the same set of colours
@@ -84,28 +85,29 @@ function generatePie(typeOfUpdate){
   var valArray = pieDataset.map(function(sector){return sector.value})
   var sum = math.fraction(valArray.reduce((partialSum, n) => partialSum.add(new math.fraction(n)), math.fraction(0)));
   var fullCirclePieDataset = pieDataset.slice();
-  var sumToOne = d3.select("#pieSumToOneIndicator");
   var HTMLsumToOne = document.getElementById("pieSumToOneIndicator");
-  var sumDisplay = d3.select("#pieSum");
   if(math.fraction(1) > sum || math.fraction(1) < sum){ 
     //!== not supported in math.fraction
     if(pieDataset.length !== 0){
-      sumToOne.text("\u2718");
+      textUpdate_viewer("pieSumToOneIndicator", "\u2718");
       HTMLsumToOne.style.color = 'red';
       var fullyDecimal = valArray.every(val => typeof val === 'number');
       if(fullyDecimal){
-        sumDisplay.text("(" + sum + ")");
+        textUpdate_viewer("pieSum", "(" + sum + ")");
       }
       else{
-        sumDisplay.text("(" + sum.n + "/" + sum.d + ")");
+        textUpdate_viewer("pieSum", "(" + sum.n + "/" + sum.d + ")");
       }
+    }
+    else{
+      hideSumIndicator();
     }
     fullCirclePieDataset.push({"label": "", "id": 0, "value": 1 - sum});
   }
   else{
-    sumToOne.text("\u2714");
+    textUpdate_viewer("pieSumToOneIndicator", "\u2714");
     HTMLsumToOne.style.color = 'darkgreen';
-    sumDisplay.text("");
+    textUpdate_viewer("pieSum", "");
     if(conditionalTable === null){ 
       if(typeOfUpdate){
         pieUpdated(); //Pie chart is valid, so update the graph accordingly. 
@@ -192,9 +194,29 @@ function decimalOrFraction(){
   if(inputSwitchChecked){ //Fraction
     displayUpdate_viewer("sectorDecimal", "none");
     changeFraction_viewer("inline-block");
-  } else {
+    if(selectedSector){
+      var fractionToDisplay = selectedSector.value;
+      if(typeof fractionToDisplay !== 'object'){
+        var fractionToDisplay = math.fraction(selectedSector.value);
+      }
+      valueUpdate_viewer('sectorNumerator', fractionToDisplay.n);
+      valueUpdate_viewer('sectorDenominator', fractionToDisplay.d);
+      //valueUpdate_viewer("sectorDecimal", selectedSector.value);
+
+    }
+  } else { //Decimal
     displayUpdate_viewer("sectorDecimal", "inline-block"); 
     changeFraction_viewer("none");
+    if(selectedSector){
+      var decimalToDisplay = selectedSector.value;
+      if(typeof decimalToDisplay === 'object'){
+        if(isRecurring(decimalToDisplay)){
+          throwPieAlert_viewer("Decimal is recurring!")
+        }
+        var decimalToDisplay = math.number(decimalToDisplay);
+      }
+      valueUpdate_viewer("sectorDecimal", decimalToDisplay);
+    }
   }
 }
 
@@ -249,15 +271,14 @@ function sectorSelected(){
     }
   }
   var inputSwitch = document.getElementById('switchCheckBox');
-  if(typeof selectedSectorValue === 'number'){ //i.e. The value was entered as a decimal.
+  if(typeof selectedSectorValue !== 'object'){ //i.e. The value was entered as a decimal.
     valueUpdate_viewer("sectorDecimal", selectedSector.value);
     if(inputSwitch.checked){ //i.e. on fraction input currently
       document.getElementById('switchCheckBox').click();  
-      inputSwitch.setAttribute("aria-valuenow", "Decimal");                      //<--------------
+      inputSwitch.setAttribute("aria-valuenow", "Decimal");                  
     }
   }
   else{ //The value was entered as a math.js fraction, which is an object.
-    var fraction = selectedSector.value;
     valueUpdate_viewer('sectorNumerator', selectedSectorValue.n);
     valueUpdate_viewer('sectorDenominator', selectedSectorValue.d);
     if(!inputSwitch.checked){ //i.e. on decimal input currently
@@ -279,7 +300,7 @@ function sectorClick(clickedSector){
     else{
       if(clickedSector.data.id === selectedSector.id){
         selectedSector = null;
-        sectorOptionSelected_viewer("None");
+        sectorOptionSelected_viewer("None"); 
         inputsClear_viewer();
         if(!isConditional_model()){ 
           textUpdate_viewer("pieSectorAddOrModify", "Add");
@@ -350,27 +371,38 @@ function sectorAdd(){
     for (var i = 0; i < pieDataset.length; ++i) {
       var sector = pieDataset[i];
       if(sector.label === sectorName){
-        return false;
+        return sector;
       }
     }
-    return true;
+    return null;
   }
   if(!isConditional_model()){ 
     //Can only add a sector if the node isn't conditional on others. 
     var sectorName = valueGet_viewer("sectorName");
     if(sectorName === ""){
-      throwPieError_viewer("Please enter a value!");
+      throwPieError_viewer("Enter a value!");
       return;
     }
-    if(!nameUnique(sectorName)){
-      throwPieError_viewer("This value would be a duplicate on this pie chart!");
-      inputsClear_viewer();
+    if(sectorName.length > 15){
+      throwPieError_viewer("Sector names should be 15 characters or less!");
+      return;
+    }
+    if(sectorName.length > 15){
+      throwPieError_viewer("Sector names should be 15 characters or less!");
+      return;
+    }
+    var sectorExists = nameUnique(sectorName);
+    if(sectorExists){
+      selectedSector = sectorExists;
+      sectorModify();
       return;
     }
     var sectorValue = valueGet_viewer("sectorDecimal");
     if(sectorValue === ""){ //Didn't enter a decimal - i.e. enter as fraction
       fractionClear_viewer();
-      if(sectorDen === "" ||sectorNum === ""){
+      var sectorDen = valueGet_viewer("sectorDenominator");
+      var sectorNum = valueGet_viewer("sectorNumerator");
+      if(sectorDen === "" || sectorNum === ""){
         throwPieError_viewer("Enter a decimal or fraction!");
         return;
       }
@@ -470,6 +502,12 @@ function sectorModify(){
       }
     }
   }
+  if(observedValue){
+    if(observedValue.id !== selectedSector.id){
+      observedValue.label = sectorName;
+      pieUpdated();
+    }
+  }
   resetPie();
   generatePie("modify");
   transitionPie();
@@ -482,6 +520,7 @@ function renamePieOnClick(){
     displayUpdate_viewer("pieChartNameInput", "inline-block");
     valueUpdate_viewer("pieChartNameInput", variableName);
     textUpdate_viewer("renameButton", "Confirm Rename");
+    textRemove_viewer("pieChartDependencyIndicator");
   }
   else{
     var newPieName = valueGet_viewer("pieChartNameInput");
@@ -493,13 +532,18 @@ function renamePieOnClick(){
       throwPieError_viewer("A variable named " + newPieName + " exists!");
       return;
     }
+    if(newPieName.length > 20){
+      throwPieError_viewer("Variable names should be 20 characters or less!");
+      return;
+    }
     variableName = newPieName;
     displayUpdate_viewer("pieChartName", "inline-block");
     textUpdate_viewer("pieChartName", variableName);
-    displayUpdate_viewer("renameButton",  "none");
     displayUpdate_viewer('pieChartNameInput', "none");
     pieNameChange(newPieName);
     textUpdate_viewer("renameButton","Rename Variable");
+    displayUpdate_viewer("renameButton",  "inline-block");
+    textUpdate_viewer("pieChartDependencyIndicator", depdencyIndicatorText);
   }
 }
 
@@ -538,10 +582,11 @@ function displayPie(d, upperInstruction, lowerInstruction){
     observedValue = d.observedValue;
   }
   else{
-    variableName = ""; //Could be null? Check implications. 
+    variableName = ""; 
     variableValuesInput_model(null);
     observedValue = null;
   }
+  depdencyIndicatorText = "";
   selectedSector = null;
   selectedCell = null;
 }
@@ -611,8 +656,9 @@ function displayConditionalPie(d, conditionedOnPies, conditionedLabels){
   return false;
 }
 
-function displayConditionalPieGivenConditionals(depdencyIndicatorText, newPieDataset){
+function displayConditionalPieGivenConditionals(depdencyText, newPieDataset){
   //Viewer Commands
+  depdencyIndicatorText = depdencyText;
   pieInstructionsUpdate_viewer(
     "Modify the variable's values and press 'Update Table' when done:" + "\u00A0",
     "",
@@ -649,62 +695,36 @@ function singleValuePieCheck(){
   }
 }
 
-function keydown() {
-  switch (d3v5.event.keyCode) {
-    case 8: { //Delete
-      if(shift && !deletingAffectsGraph){
-        deleteSector();
-      }
-      break;
-    }
-    case 13:{ //Enter 
-      if(!observedValue){ 
-        observedValue = {"label": selectedSector.label, "id": selectedSector.id, "value": 1};
-        pieUpdated();
-      }
-      else{
-        if(observedValue.label !== selectedSector.label){
-          observedValue = {"label": selectedSector.label, "id": selectedSector.id, "value": 1};
-          pieUpdated();
-        }
-        else{
+function deleteSector(){
+  if(!isConditional_model()){
+    //Can only delete a sector if the node isn't conditional on others. 
+    if(selectedSector){ 
+      if(observedValue){
+        if(observedValue.id === selectedSector.id){
           observedValue = null;
           pieUpdated();
         }
       }
-      break
-    }
-  }
-}
+      pieDataset = pieDataset.filter(function(currentDatum){return selectedSector.id !== currentDatum.id});
+      var sectorName = selectedSector.label;
+      removeVariableValue_model(sectorName);
+      selectedSector = null;
+      
+      //Viewer
+      textUpdate_viewer("pieSectorAddOrModify", "Add");
+      inputsClear_viewer();
 
-function keyup() {
-  switch (d3v5.event.keyCode) {
-    case 16: { // shift
-      shift = false;
-    }
-  }
-}
-  
-function deleteSector(){
-    if(!isConditional_model()){
-      //Can only delete a sector if the node isn't conditional on others. 
-      if(selectedSector){ 
-        pieDataset = pieDataset.filter(function(currentDatum){return selectedSector.id !== currentDatum.id});
-        var sectorName = selectedSector.label;
-        removeVariableValue_model(sectorName);
-        selectedSector = null;
-        
-        //Viewer
-        textUpdate_viewer("pieSectorAddOrModify", "Add");
-        inputsClear_viewer();
-
-        //State 
-        displaySectorOptions(); //From which viewer commands are called.
-        resetPie();
-        generatePie("delete");
-        transitionPie();  
+      //State 
+      displaySectorOptions(); //From which viewer commands are called.
+      resetPie();
+      generatePie("delete");
+      transitionPie();
+      
+      if(pieDataset.length === 0){
+        deleteNodeAsSectorsDeleted();
       }
     }
+  }
   else{
     throwPieErrow_viewer("A value can't be removed from a conditional node.");
   }
@@ -718,5 +738,60 @@ function checkProbabilitySum(){
   }
   else{
     return false;
+  }
+}
+function isRecurring(fraction){
+  //A fraction is recurring if its denominator cannot be represented as 
+  //2^x * 5^y for integers x,y
+  var denominator = fraction.d;
+  while(denominator % 5 === 0){
+      denominator = denominator / 5;
+  }
+  while(denominator % 2 === 0){
+      denominator = denominator / 2;
+  }
+  if(denominator === 1){
+      return false;
+  }
+  else{
+      return true;
+  }
+}
+
+function keydown() {
+  switch (d3v5.event.keyCode) {
+    case 8: { //Delete
+      if(shift && !deletingAffectsGraph){
+        deleteSector();
+      }
+      break;
+    }
+    case 13:{ //Enter 
+      if(shift){
+        if(!observedValue){ 
+          observedValue = {"label": selectedSector.label, "id": selectedSector.id, "value": 1};
+          pieUpdated();
+        }
+        else{
+          if(observedValue.label !== selectedSector.label){
+            observedValue = {"label": selectedSector.label, "id": selectedSector.id, "value": 1};
+            pieUpdated();
+          }
+          else{
+            observedValue = null;
+            pieUpdated();
+          }
+        }
+        break;
+      }
+    }
+  }
+}
+
+function keyup() {
+  switch (d3v5.event.keyCode) {
+    case 16: { // shift
+      shift = false;
+    }
   }
 }

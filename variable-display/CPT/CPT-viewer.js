@@ -79,7 +79,7 @@ function format1DCellTextBold_viewer(cellVariable, cellValue, cellColour){
 
 function format2DCellText_viewer(variable1, value1, colour1, variable2, value2, colour2){
     var textOfCell = format1DCellTextBold_viewer(variable1, value1, colour1)
-    + "<BR>" 
+    + ", <BR>" 
     + format1DCellTextBold_viewer(variable2, value2, colour2);
     return textOfCell
 }

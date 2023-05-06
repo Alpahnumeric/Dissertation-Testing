@@ -21,16 +21,18 @@
     <script src = https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.3.0/math.min.js></script> 
     <script src = "https://d3js.org/d3-selection-multi.v1.min.js"></script>
     <script src = https://github.com/infusion/Fraction.js></script>
-    <link type = "text/css" rel = "stylesheet" href = "./website.css"/>
-    <link type = "text/css" rel = "stylesheet" href = "./force/force.css"/>
-    <link type = "text/css" rel = "stylesheet" href = "./pie/pie.css"/>
+    <script src = "lib/fileSaver.js" charset = "utf-8"></script>
+    <script src = "lib/saveSvgAsPng.js" charset = "utf-8"></script>
+    <link type = "text/css" rel = "stylesheet" href = "./index.css"/>
+    <link type = "text/css" rel = "stylesheet" href = "./CBN/CBN-display/CBN-display.css"/>
+    <link type = "text/css" rel = "stylesheet" href = "./variable-display/pie-display/pie-display.css"/>
 </head>
 
 <body>
     <ol>
         <li><a class = "menuOption" onclick = 'home_viewer();' href = "javascript:home_viewer();">Home</a></li>
         <li><a class = "menuOption" onclick = 'displayInstructions_viewer();' href = "javascript:displayInstructions_viewer();">Instructions</a></li>
-        <li class = "dropdown" aria-haspopup="true">
+        <li tabindex="0" class = "dropdown" aria-haspopup="true">
             <a class = "aInTopPannel dropbtn" href = "javascript:void(0)">Examples</a>
             <div id = "exampleGraphOptions" class = "dropdown-content">
                 <button id = "teaHouse">&#x2615; Tea House</button>
@@ -50,13 +52,20 @@
                 <input type = "file" id = "uploadFile" class = "uploadFile" aria-hidden = "true">
             </div>
         </li>
-        <li><a class = "menuOption" href = "javascript:inference();">Inference</a></li>
+        <li tabindex="0" class = "dropdown" aria-haspopup="true">
+            <a class = "aInTopPannel dropbtn" href = "javascript:void(0)">Inference</a>
+            <div id = "inferenceOptions" class = "dropdown-content">
+                <button id = "runInference">&#128221; Run Inference</button>
+                <button id = "revertInference">&#x23EA; Restore Network</button>
+            </div>
+        </li>
     </ol>
     <div class = "pieAndNetworkDiv">
         <div class = "leftContainer" id = "networkContainer">
             <p id = "networkErrorAlert" class = "pFormatting error" ></p>
             <div id = "pieLabels"></div>
             <svg id = "networkSVG"></svg> 
+            <rect id = "networkSVGReaction"/>
             <div class = "leftBelowNetworkDiv"></div>
             <div class = "rightBelowNetworkDiv"></div>
             <p id = "zoomAmountLabel" class = "zoom">1</p>
@@ -130,27 +139,31 @@
     <div class = "tableContainer">
         <table id = "conditionalProbabilityTable" aria-label ="Conditional Probability Table"></table>
     </div>
-    <script src = "general-viewer.js" charset = "utf-8"></script> 
-    <script src = "lib/fileSaver.js" charset = "utf-8"></script>
-    <script src = "lib/saveSvgAsPng.js" charset = "utf-8"></script>
-    <script src = "menu/menu-presenter.js" charset = "utf-8"></script> 
-    <script src = "menu/menu-viewer.js" charset = "utf-8"></script> 
-    <script src = "window/window-presenter.js" charset = "utf-8"></script> 
-    <script src = "window/window-viewer.js" charset = "utf-8"></script> 
-    <script src = "load-and-save/loadandsave.js" charset = "utf-8"></script> 
-    <script src = "pie/pie-model.js" charset = "utf-8"></script> 
-    <script src = "table/table-model.js" charset = "utf-8"></script> 
-    <script src = "variableValues/variableValues-model.js" charset = "utf-8"></script> 
-    <script src = "pie/pie-presenter.js" charset = "utf-8"></script>
-    <script src = "force/force-model.js" charset = "utf-8"></script> 
-    <script src = "force/force-presenter.js" charset = "utf-8"></script> 
-    <script src = "force/force-viewer.js" charset = "utf-8"></script> 
-    <script src = "pie/pie-viewer" charset = "utf-8"></script> 
-    <script src = "table/table-presenter.js" charset = "utf-8"></script> 
-    <script src = "table/table-viewer.js" charset = "utf-8"></script>
-    <script src = "variableValues/variableValues-presenter.js" charset = "utf-8"></script> 
-    <script src = "variableValues/variableValues-viewer.js" charset = "utf-8"></script>
-    <script src = "bundle.js" charset = "utf-8"></script>
-    <script src = "start.js" charset = "utf-8"></script>
+    <script src = "general-viewer.js" charset = "utf-8"></script>
+    <script src = "CBN/CBN-examples/CBN-examples-presenter.js" charset = "utf-8"></script> 
+    <script src = "CBN/CBN-examples/CBN-examples-viewer.js" charset = "utf-8"></script> 
+    <script src = "browser-window/browser-window-model.js" charset = "utf-8"></script> 
+    <script src = "browser-window/browser-window-presenter.js" charset = "utf-8"></script> 
+    <script src = "browser-window/browser-window-viewer.js" charset = "utf-8"></script> 
+    <script src = "load-and-save.js" charset = "utf-8"></script> 
+    <script src = "variable-display/pie-display/pie-display-model.js" charset = "utf-8"></script> 
+    <script src = "variable-display/CPT/CPT-model.js" charset = "utf-8"></script> 
+    <script src = "variable-display/variable-dropdown/variable-dropdown-model.js" charset = "utf-8"></script> 
+    <script src = "variable-display/pie-display/pie-display-presenter.js" charset = "utf-8"></script>
+    <script src = "CBN/CBN-display/CBN-display-model.js" charset = "utf-8"></script> 
+    <script src = "CBN/CBN-display/CBN-display-presenter.js" charset = "utf-8"></script> 
+    <script src = "CBN/CBN-display/CBN-display-viewer.js" charset = "utf-8"></script> 
+    <script src = "variable-display/pie-display/pie-display-viewer" charset = "utf-8"></script> 
+    <script src = "variable-display/CPT/CPT-presenter.js" charset = "utf-8"></script> 
+    <script src = "variable-display/CPT/CPT-viewer.js" charset = "utf-8"></script>
+    <script src = "variable-display/variable-dropdown/variable-dropdown-presenter.js" charset = "utf-8"></script> 
+    <script src = "variable-display/variable-dropdown/variable-dropdown-viewer.js" charset = "utf-8"></script>
+    <script src = "inference/inference-model.js"charset = "utf-8"></script>
+    <script src = "inference/inference-presenter.js"charset = "utf-8"></script>
+    <script src = "inference/inference-viewer.js"charset = "utf-8"></script>
+    <script>
+        startForce();
+        generatePie(false);
+    </script>
 </body>
 </html>

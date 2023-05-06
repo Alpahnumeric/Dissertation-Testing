@@ -1,0 +1,2 @@
+var windowWidth;
+var windowHeight;
