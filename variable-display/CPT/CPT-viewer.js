@@ -4,11 +4,24 @@ var table = document.getElementById("conditionalProbabilityTable");
 clickListener_viewer("conditionalProbabilityTable", tableClick);
 
 clickListener_viewer("updateTableButton", tableUpdateButtonClick);
-
 //----------------------------------VIEWER <- PRESENTER------------------------------------
+
+function tableUpdated_viewer(){
+    colourUpdate_viewer("updatedTableIndicator", "green"); 
+    textUpdate_viewer("updatedTableIndicator", "\u00A0 \u00A0 \u00A0 Updated");
+    colourUpdate_viewer("updateTableArrow", "green");
+    setTimeout(function () {
+        textUpdate_viewer("updatedTableIndicator", "");  
+        colourUpdate_viewer("updateTableArrow", "black");  
+        colourUpdate_viewer("updatedTableIndicator", "black");
+        textUpdate_viewer("updatedTableIndicator", "\u00A0\u00A0\u00A0\u00A0 Select a combination of parent values to view a pie chart.");
+    }, 1000);
+}
+
 function table_viewer(){ 
     textUpdate_viewer("probTableLabel", "Conditional Probability Table");
     textUpdate_viewer("probTableArrow", "\u21B4");
+    colourUpdate_viewer("updatedTableIndicator", "black");
     textUpdate_viewer("updatedTableIndicator", "\u00A0\u00A0\u00A0\u00A0 Select a combination of parent values to view a pie chart.");
     tableBorder_viewer("2");
     //updateTableButton and updateTableArrow are only displayed once a cell is clicked.

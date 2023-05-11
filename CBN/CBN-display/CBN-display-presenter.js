@@ -921,7 +921,6 @@ function pieNameChange(newName){
       break;
     }
   }
-  //HIHI
 }
 
 function pieUpdated(){  

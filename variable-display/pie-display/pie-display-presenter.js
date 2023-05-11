@@ -259,7 +259,13 @@ function dropDownSectorSelected(){
 
 function sectorSelected(){
   textUpdate_viewer("pieSectorAddOrModify", "Modify");
-  textUpdate_viewer("pieInstruction1", "Press enter to select this as the observed value: " + "\u00A0");
+  var updateViewerText = "Press enter to select this as the observed value: " + "\u00A0";
+  if(observedValue){
+    if(observedValue.label = selectedSector.label){
+      updateViewerText = "Press enter to deselect this from being the observed value: " + "\u00A0";
+    }
+  }
+  textUpdate_viewer("pieInstruction1", updateViewerText);
   //\u00A0 is the unicode literal for a non breaking space. 
   textUpdate_viewer("pieInstruction2", "Modify this sector by changing its value or probability: ");
   valueUpdate_viewer("sectorName", selectedSector.label);
@@ -300,7 +306,12 @@ function sectorClick(clickedSector){
     else{
       if(clickedSector.data.id === selectedSector.id){
         selectedSector = null;
-        sectorOptionSelected_viewer("None"); 
+        if(observedValue){
+          sectorOptionSelected_viewer(observedValue.label);
+        }
+        else{
+          sectorOptionSelected_viewer("None"); 
+        }
         inputsClear_viewer();
         if(!isConditional_model()){ 
           textUpdate_viewer("pieSectorAddOrModify", "Add");
@@ -432,6 +443,9 @@ function sectorAdd(){
     addVariableValue_model(sectorName);
     inputsClear_viewer();
     displaySectorOptions();
+    if(observedValue){
+      sectorOptionSelected_viewer(observedValue.label);
+    }
     resetPie();
     generatePie("add");
     transitionPie();
@@ -572,6 +586,7 @@ function displayPie(d, upperInstruction, lowerInstruction){
   else{
     displayPie_viewer("Variable Pie Chart Display");
   }
+
   pieInstructionsUpdate_viewer(upperInstruction, lowerInstruction);
   tableRemove_viewer()
   
@@ -626,6 +641,9 @@ function displayUnconditionalPie(d){
   conditionedOnLabels = null;
   conditionalTableInput_model(null);
   displaySectorOptions(); //From which viewer commands are called.
+  if(observedValue){
+    sectorOptionSelected_viewer(observedValue.label);
+  }
   resetPie();
   generatePie(null);
   transitionPie();
@@ -716,6 +734,9 @@ function deleteSector(){
 
       //State 
       displaySectorOptions(); //From which viewer commands are called.
+      if(observedValue){
+        sectorOptionSelected_viewer(observedValue.label);
+      }
       resetPie();
       generatePie("delete");
       transitionPie();
@@ -770,15 +791,18 @@ function keydown() {
       if(shift){
         if(!observedValue){ 
           observedValue = {"label": selectedSector.label, "id": selectedSector.id, "value": 1};
+          textUpdate_viewer("pieInstruction1", "Press enter to deselect this as the observed value: " + "\u00A0");
           pieUpdated();
         }
         else{
           if(observedValue.label !== selectedSector.label){
             observedValue = {"label": selectedSector.label, "id": selectedSector.id, "value": 1};
+            textUpdate_viewer("pieInstruction1", "Press enter to deselect this as the observed value: " + "\u00A0");
             pieUpdated();
           }
           else{
             observedValue = null;
+            textUpdate_viewer("pieInstruction1", "Press enter to select this as the observed value: " + "\u00A0");
             pieUpdated();
           }
         }

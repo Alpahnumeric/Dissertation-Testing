@@ -199,13 +199,6 @@ function tableUpdateButtonClick(){
 }
   
 function updateTable(){
-    var text = "\u00A0 \u00A0 \u00A0 Updated";
-    textUpdate_viewer("updatedTableIndicator", text);
-    colourUpdate_viewer("updateTableArrow", "green");
-    setTimeout(function () {
-        textUpdate_viewer("updatedTableIndicator", "");  
-        colourUpdate_viewer("updateTableArrow", "black");  
-    }, 1000);
     var pieValues = getPieValues();
     var tableIndicies = selectedCell.id.split(',');
     if(conditionedOnVariables.length === 1){
@@ -218,9 +211,11 @@ function updateTable(){
         conditionalTable[tableIndicies[0]][tableIndicies[1]][tableIndicies[2]] = pieValues;
     }
     cellColour_viewer(selectedCell.id, "#f8f8f8");
+    tableUpdated_viewer();
     selectedCell = null;
     pieDataset = [];
     resetPie();
     generatePie(false);
     transitionPie();
+    pieUpdated();
 }

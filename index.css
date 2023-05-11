@@ -188,6 +188,10 @@ li.dropdown {
   color: red;
 }
 
+.updatedprobTableIndicator{
+  color: green;
+}
+
 .boldInstruction {
   font-weight: bold;
 }
